@@ -1,1 +1,1 @@
-"# Hyper-market" 
+# Hyper market system management
