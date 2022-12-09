@@ -30,4 +30,16 @@ final public class DB {
         }
     }
     
+    static private ResultSet DQLQuery(String query) {
+        try {
+            Connection conn = connect();
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            return stmt.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); 
+            return null;
+        }
+    }
+    
 }
