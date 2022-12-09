@@ -10,7 +10,7 @@ final public class DB {
     
     static private Connection connect() throws SQLException {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName(CLASS_NAME);
             return DriverManager.getConnection(CONNICTION_URL, USER_NAME, PASSWORD);
         } catch (Exception e) {
             return null;
