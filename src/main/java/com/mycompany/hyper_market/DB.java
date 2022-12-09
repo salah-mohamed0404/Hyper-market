@@ -17,4 +17,17 @@ final public class DB {
         }
     }
     
+    static private boolean DMLQuery(String query) {
+        try {
+            Connection conn = connect();
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+        
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage()); 
+            return false;
+        }
+    }
+    
 }
