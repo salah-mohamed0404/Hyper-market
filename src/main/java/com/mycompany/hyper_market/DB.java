@@ -7,7 +7,7 @@ final public class DB {
     final static private String CONNICTION_URL = "jdbc:sqlserver://localhost:1433;databaseName=HyperMarket;encrypt=true;trustServerCertificate=true;";
     final static private String USER_NAME = "sa";
     final static private String PASSWORD = "1234";
-    
+
     static private Connection connect() throws SQLException {
         try {
             Class.forName(CLASS_NAME);
@@ -16,20 +16,20 @@ final public class DB {
             return null;
         }
     }
-    
+
     static private boolean DMLQuery(String query) {
         try {
             Connection conn = connect();
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(query);
-        
+
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage()); 
+            System.out.println(e.getMessage());
             return false;
         }
     }
-    
+
     static private ResultSet DQLQuery(String query) {
         try {
             Connection conn = connect();
@@ -37,20 +37,24 @@ final public class DB {
 
             return stmt.executeQuery();
         } catch (Exception e) {
-            System.out.println(e.getMessage()); 
+            System.out.println(e.getMessage());
             return null;
         }
     }
-    
-    static public boolean isUserNameUnique(String userName) {
-        String query = "SELECT userName FROM users WHERE userName = '" + userName + "'";
-        
-        try {
+
+static private boolean isUnique(String query) {
+    try {
             ResultSet r = DQLQuery(query);
             return !r.next();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
+}
+
+    static public boolean isUserNameUnique(String userName) {
+        String query = "SELECT userName FROM users WHERE userName = '" + userName + "'";
+
+        return isUnique(query);
     }
 }
