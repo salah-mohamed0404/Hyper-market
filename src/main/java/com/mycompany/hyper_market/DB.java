@@ -42,4 +42,15 @@ final public class DB {
         }
     }
     
+    static public boolean isUserNameUnique(String userName) {
+        String query = "SELECT userName FROM users WHERE userName = '" + userName + "'";
+        
+        try {
+            ResultSet r = DQLQuery(query);
+            return !r.next();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 }
