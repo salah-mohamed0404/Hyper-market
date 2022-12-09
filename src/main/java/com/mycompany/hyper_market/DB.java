@@ -42,18 +42,24 @@ final public class DB {
         }
     }
 
-static private boolean isUnique(String query) {
-    try {
-            ResultSet r = DQLQuery(query);
-            return !r.next();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-}
+    static private boolean isUnique(String query) {
+        try {
+                ResultSet r = DQLQuery(query);
+                return !r.next();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+    }
 
     static public boolean isUserNameUnique(String userName) {
         String query = "SELECT userName FROM users WHERE userName = '" + userName + "'";
+
+        return isUnique(query);
+    }
+
+    static public boolean isUserIdUnique(int userId) {
+        String query = "SELECT id FROM users WHERE id = '" + userId + "'";
 
         return isUnique(query);
     }
