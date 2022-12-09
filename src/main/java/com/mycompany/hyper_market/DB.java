@@ -8,4 +8,13 @@ final public class DB {
     final static private String USER_NAME = "sa";
     final static private String PASSWORD = "1234";
     
+    static private Connection connect() throws SQLException {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(CONNICTION_URL, USER_NAME, PASSWORD);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
 }
