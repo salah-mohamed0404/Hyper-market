@@ -14,7 +14,7 @@ CREATE TABLE users(
 	[type] NVARCHAR(50) NOT NULL
 )
 
-INSERT INTO users VALUES (1, 'admin', 'admin1', 'admin', 'admin')
+INSERT INTO users VALUES (1, 'admin', 'admin', 'admin', 'admin')
 
 GO
 
@@ -27,30 +27,23 @@ CREATE TABLE user_actions(
 
 GO
 
+CREATE TABLE orders(
+	id INT PRIMARY KEY IDENTITY(1, 1),
+	createdAt DATE DEFAULT(GETDATE()),
+	isCanceled BIT DEFAULT(0) CHECK(isCanceled in (0, 1)),
+	userId INT REFERENCES users(id)
+)
+
+GO
+
 CREATE TABLE products(
-	id INT PRIMARY KEY,
+	id INT PRIMARY KEY IDENTITY(1, 1),
 	[name] NVARCHAR(50) NOT NULL,
 	price FLOAT NOT NULL,
 	offerPrice FLOAT DEFAULT(-1),
 	isReturn BIT DEFAULT(0) CHECK(isReturn in (0, 1)),
 	isDamage BIT DEFAULT(0) CHECK(isDamage in (0, 1)),
 	[expireDate] DATE NOT NULL,
-	addedAt DATE DEFAULT(GETDATE())
-)
-
-GO
-
-CREATE TABLE orders(
-	id INT PRIMARY KEY,
-	createdAt DATE DEFAULT(GETDATE()),
-	isCanceled BIT DEFAULT(0) CHECK(isCanceled in (0, 1)),
-	userId INT REFERENCES users(id)
-)
-
-GO 
-
-CREATE TABLE order_details(
-	productId INT REFERENCES products(id),
-	orderId INT REFERENCES orders(id),
-	primary key(productId, orderId)
+	addedAt DATE DEFAULT(GETDATE()),
+	orderId INT REFERENCES orders(id)
 )
