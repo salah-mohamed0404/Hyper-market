@@ -21,17 +21,17 @@ GO
 CREATE TABLE user_actions(
 	id INT PRIMARY KEY IDENTITY(1, 1),
 	[action] NVARCHAR NOT NULL,
-	createdAt DATE DEFAULT(GETDATE()),
-	userId INT REFERENCES users(id) 
+	createdAt DATE,
+	userId INT REFERENCES users(id) ON DELETE CASCADE
 )
 
 GO
 
 CREATE TABLE orders(
 	id INT PRIMARY KEY IDENTITY(1, 1),
-	createdAt DATE DEFAULT(GETDATE()),
+	createdAt DATE,
 	isCanceled BIT DEFAULT(0) CHECK(isCanceled in (0, 1)),
-	userId INT REFERENCES users(id)
+	userId INT REFERENCES users(id) ON DELETE CASCADE
 )
 
 GO
@@ -41,9 +41,8 @@ CREATE TABLE products(
 	[name] NVARCHAR(50) NOT NULL,
 	price FLOAT NOT NULL,
 	offerPrice FLOAT DEFAULT(-1),
-	isReturn BIT DEFAULT(0) CHECK(isReturn in (0, 1)),
-	isDamage BIT DEFAULT(0) CHECK(isDamage in (0, 1)),
 	[expireDate] DATE NOT NULL,
-	addedAt DATE DEFAULT(GETDATE()),
-	orderId INT REFERENCES orders(id)
+	[type] nvarchar(100) NOT NULL,
+	addedAt DATE,
+	orderId INT REFERENCES orders(id) ON DELETE CASCADE
 )
