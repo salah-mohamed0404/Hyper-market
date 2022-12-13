@@ -32,4 +32,8 @@ public abstract class DB {
 
         return !r.next();
     }
+    
+    protected static String formatCondition (String condition) {
+        return condition.trim().equals("*")? "id > -1": condition;
+    }
 }
