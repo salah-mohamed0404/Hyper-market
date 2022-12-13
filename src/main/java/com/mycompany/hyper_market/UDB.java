@@ -15,8 +15,8 @@ public class UDB extends DB {
         String query = "SELECT id FROM users WHERE id = '" + userId + "'";
 
         return isUnique(query);
-    } 
-    
+    }
+
 //    public static User login(String userName, String password) throws SQLException, ClassNotFoundException {
 //        String query = "SELECT * FROM users WHERE userName = '" + userName + "' and password = '" + password + "'";
 //        
@@ -42,6 +42,18 @@ public class UDB extends DB {
     
     public static void delete(String condition) throws SQLException, ClassNotFoundException {
         String query = "DELETE FROM users WHERE " + formatCondition(condition);
+
+        DMLQuery(query);
+    }
+
+
+    public static void update(User user) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users"
+                + " SET name = '" + user.name +"'"
+                + " SET userName = '" + user.userName + "'"
+                + " SET password = '" + user.password + "'"
+                + " SET type = '" + user.type + "'"
+                + " WHERE id = " + user.id ;
         
         DMLQuery(query);
     }
