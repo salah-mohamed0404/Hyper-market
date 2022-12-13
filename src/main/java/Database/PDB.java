@@ -39,4 +39,24 @@ public class PDB extends DB{
         DMLQuery(query);
     }
 
+    public static ArrayList<Product> search(String condition) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM users WHERE " + formatCondition(condition);
+
+        ResultSet res = DQLQuery(query);
+        
+        ArrayList<Product> usersRes = new ArrayList<>();
+        while (res.next()) {
+            usersRes.add(new Product(
+                    res.getInt("id"),
+                    res.getNString("name"),
+                    res.getFloat("price"),
+                    res.getFloat("offerPrice"),
+                    res.getDate("expireDate"),
+                    res.getDate("addedAt"),
+                    res.getNString("type")
+            ));
+        }
+        
+        return usersRes;
+    }
 }
