@@ -15,6 +15,22 @@ public class UDB extends DB {
         String query = "SELECT id FROM users WHERE id = '" + userId + "'";
 
         return isUnique(query);
+    } 
+    
+    public static User login(String userName, String password) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM users WHERE userName = '" + userName + "' and password = '" + password + "'";
+        
+        ResultSet res = DQLQuery(query);
+        
+        if(!res.next()) return null;
+        
+        return new User(
+                res.getInt("id"),
+                res.getNString("name"),
+                res.getNString("userName"),
+                res.getNString("password"),
+                res.getNString("type")
+                );
     }
     
 }
