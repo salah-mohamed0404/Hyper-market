@@ -4,12 +4,17 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ADB extends DB {
+
     public static int add(Action action, int userId) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO users VALUES("
-                + action.id + ", '" + action.action + "', " + action.createdAt + ", " + userId + ")";
+                + action.id + ", "
+                + "'" + action.action + "', "
+                + "'" + action.createdAt + "', "
+                + userId
+                + ")";
 
         DMLQuery(query);
-        
+
         return getId("user_actions", "id = " + userId);
     }
 
@@ -27,11 +32,11 @@ public class ADB extends DB {
         DMLQuery(query);
     }
 
-    public static ArrayList<User> search(String condition) throws SQLException, ClassNotFoundException {
+    public static ArrayList<Action> search(String condition) throws SQLException, ClassNotFoundException {
         String query = "SELECT * FROM user_actions WHERE " + formatCondition(condition);
 
         ResultSet res = DQLQuery(query);
-        
+
         ArrayList<Action> usersRes = new ArrayList<>();
         while (res.next()) {
             usersRes.add(new Action(
@@ -40,7 +45,7 @@ public class ADB extends DB {
                     Date.valueOf(res.getNString("createdAt"))
             ));
         }
-        
+
         return usersRes;
     }
 }

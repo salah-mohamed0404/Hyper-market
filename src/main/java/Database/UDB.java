@@ -37,7 +37,12 @@ public class UDB extends DB {
 
     public static void add(User user) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO users VALUES("
-                + user.id + ", '" + user.name + "', '" + user.userName + "', '" + user.password + "', '" + user.type + "')";
+                + user.id + ", " 
+                + "'" + user.name + "', " 
+                + "'" + user.userName + "', " 
+                + "'" + user.password + "', " 
+                + "'" + user.type +"'"
+                + ")";
 
         DMLQuery(query);
     }
@@ -49,11 +54,11 @@ public class UDB extends DB {
     }
 
     public static void update(User user) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users"
-                + " SET name = '" + user.name + "'"
-                + " SET userName = '" + user.userName + "'"
-                + " SET password = '" + user.password + "'"
-                + " SET type = '" + user.type + "'"
+        String query = "UPDATE users SET "
+                + " name = '" + user.name + "', "
+                + " userName = '" + user.userName + "', "
+                + " password = '" + user.password + "', "
+                + " type = '" + user.type + "'"
                 + " WHERE id = " + user.id;
 
         DMLQuery(query);
