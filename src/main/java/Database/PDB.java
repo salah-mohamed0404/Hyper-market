@@ -26,4 +26,17 @@ public class PDB extends DB{
         DMLQuery(query);
     }
 
+    public static void update(Product product) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE products SET "
+                + " name = '" + product.name + "', "
+                + " price = " + product.price + ", "
+                + " offerPrice = " + product.offerPrice + ", "
+                + " expireDate = '" + product.expireDate + "', "
+                + " type = '" + product.type + "', "
+                + " addedAt = '" + product.addedAt + "', "  
+                + " WHERE id = " + product.id;
+
+        DMLQuery(query);
+    }
+
 }
