@@ -45,4 +45,14 @@ public abstract class DB {
         return res.getInt("id");
     }
 
+    protected static int getLastRecordIdAdded(String tableName) throws SQLException, ClassNotFoundException {
+        String query = "SELECT id FROM users"
+                + " ORDER BY id DESC"
+                + " OFFSET 0 ROWS FETCH FIRST 1 ROW ONLY";
+        
+        ResultSet res = DQLQuery(query);
+        res.next();
+
+        return res.getInt("id");
+    }
 }
