@@ -27,4 +27,20 @@ public class ADB extends DB {
         DMLQuery(query);
     }
 
+    public static ArrayList<User> search(String condition) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM user_actions WHERE " + formatCondition(condition);
+
+        ResultSet res = DQLQuery(query);
+        
+        ArrayList<Action> usersRes = new ArrayList<>();
+        while (res.next()) {
+            usersRes.add(new Action(
+                    res.getInt("id"),
+                    res.getNString("action"),
+                    Date.valueOf(res.getNString("createdAt"))
+            ));
+        }
+        
+        return usersRes;
+    }
 }
