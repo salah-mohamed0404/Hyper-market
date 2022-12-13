@@ -36,5 +36,13 @@ public abstract class DB {
     protected static String formatCondition(String condition) {
         return condition.trim().equals("*") ? "id > -1" : condition;
     }
-    
+
+    protected static int getId(String tableName, String condition) throws SQLException, ClassNotFoundException {
+        String query = "SELECT id FROM " + tableName + " WHERE " + condition;
+        ResultSet res = DQLQuery(query);
+        res.next();
+
+        return res.getInt("id");
+    }
+
 }
