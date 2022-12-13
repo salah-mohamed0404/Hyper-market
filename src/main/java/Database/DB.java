@@ -1,4 +1,4 @@
-package com.mycompany.hyper_market;
+package Database;
 
 import java.sql.*;
 
