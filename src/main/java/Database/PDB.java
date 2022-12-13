@@ -20,4 +20,10 @@ public class PDB extends DB{
         return getLastRecordIdAdded("products");
     }
 
+    public static void delete(int productId) throws SQLException, ClassNotFoundException {
+        String query = "DELETE FROM products WHERE id = " + productId;
+
+        DMLQuery(query);
+    }
+
 }
