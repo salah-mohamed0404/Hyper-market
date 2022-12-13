@@ -13,4 +13,10 @@ public class ADB extends DB {
         return getId("user_actions", "id = " + userId);
     }
 
+    public static void delete(String condition) throws SQLException, ClassNotFoundException {
+        String query = "DELETE FROM user_actions WHERE " + formatCondition(condition);
+
+        DMLQuery(query);
+    }
+
 }
