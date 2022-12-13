@@ -19,4 +19,12 @@ public class ADB extends DB {
         DMLQuery(query);
     }
 
+    public static void update(Action action) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE users"
+                + " SET action = '" + action.action + "'"
+                + " WHERE id = " + action.userId;
+
+        DMLQuery(query);
+    }
+
 }
