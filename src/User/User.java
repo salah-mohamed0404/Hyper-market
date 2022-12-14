@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author DELL
  */
-public class User {
+public abstract class User {
 
     /* data field */
     private int id;
