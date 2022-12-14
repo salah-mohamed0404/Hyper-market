@@ -1,5 +1,10 @@
 package Database;
 
+/**
+ *
+ * @author Salah
+ */
+
 import java.sql.*;
 
 public abstract class DB {
