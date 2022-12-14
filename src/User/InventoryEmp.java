@@ -51,12 +51,4 @@ public class InventoryEmp extends User {
     public ArrayList<Product> searchProducts(String condition) throws SQLException, ClassNotFoundException {
         return PDB.search(condition);
     }
-
-    public void returnProduct(Product product) throws SQLException, ClassNotFoundException {
-        product.setType("returned");
-    }
-
-    public void getRidOfDamageProduct(Product product) throws SQLException, ClassNotFoundException {
-        product.setType("damaged");
-    }
 }
