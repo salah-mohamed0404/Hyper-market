@@ -1,18 +1,24 @@
 package Database;
 
+/**
+ *
+ * @author Salah
+ */
+
+import Product.Product;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class PDB extends DB{
 
     public static int add(Product product) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO products VALUES("
-                + "'" + product.name + "', "
-                + product.price + ", "
-                + product.offerPrice + ", "
-                + "'" + product.expireDate + "', "
-                + "'" + product.type + "', "
-                + "'" + product.addedAt + "', "
+        String query = "INSERT INTO products(name, price, offerPrice, expireDate, type, addedAt) VALUES("
+                + "'" + product.getName() + "', "
+                + product.getPrice() + ", "
+                + product.getOfferPrice() + ", "
+                + "'" + product.getEpireDate() + "', "
+                + "'" + product.getType() + "', "
+                + "'" + product.getAddedAtDate() + "' "
                 + ")";
 
         DMLQuery(query);
@@ -28,19 +34,19 @@ public class PDB extends DB{
 
     public static void update(Product product) throws SQLException, ClassNotFoundException {
         String query = "UPDATE products SET "
-                + " name = '" + product.name + "', "
-                + " price = " + product.price + ", "
-                + " offerPrice = " + product.offerPrice + ", "
-                + " expireDate = '" + product.expireDate + "', "
-                + " type = '" + product.type + "', "
-                + " addedAt = '" + product.addedAt + "', "  
-                + " WHERE id = " + product.id;
+                + " name = '" + product.getName() + "', "
+                + " price = " + product.getPrice() + ", "
+                + " offerPrice = " + product.getOfferPrice() + ", "
+                + " expireDate = '" + product.getEpireDate() + "', "
+                + " type = '" + product.getType() + "', "
+                + " addedAt = '" + product.getAddedAtDate() + "' "  
+                + " WHERE id = " + product.getId();
 
         DMLQuery(query);
     }
 
     public static ArrayList<Product> search(String condition) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM users WHERE " + formatCondition(condition);
+        String query = "SELECT * FROM products WHERE orderId IS NULL and " + formatCondition(condition);
 
         ResultSet res = DQLQuery(query);
         
