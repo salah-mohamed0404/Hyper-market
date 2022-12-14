@@ -46,7 +46,7 @@ public abstract class DB {
     }
 
     protected static int getLastRecordIdAdded(String tableName) throws SQLException, ClassNotFoundException {
-        String query = "SELECT id FROM users"
+        String query = "SELECT id FROM " + tableName
                 + " ORDER BY id DESC"
                 + " OFFSET 0 ROWS FETCH FIRST 1 ROW ONLY";
         
