@@ -1,21 +1,27 @@
 package Database;
 
+/**
+ *
+ * @author Salah
+ */
+
+import User.Action;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ADB extends DB {
 
     public static int add(Action action, int userId) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO users VALUES("
-                + action.id + ", "
-                + "'" + action.action + "', "
-                + "'" + action.createdAt + "', "
+        String query = "INSERT INTO user_actions ([action], createdAt, userId) "
+                + "VALUES("
+                + "'" + action.getAction() + "', "
+                + "'" + action.getCreatedAt() + "', "
                 + userId
                 + ")";
 
         DMLQuery(query);
 
-        return getId("user_actions", "id = " + userId);
+        return getLastRecordIdAdded("user_actions");
     }
 
     public static void delete(String condition) throws SQLException, ClassNotFoundException {
@@ -25,9 +31,9 @@ public class ADB extends DB {
     }
 
     public static void update(Action action) throws SQLException, ClassNotFoundException {
-        String query = "UPDATE users"
-                + " SET action = '" + action.action + "'"
-                + " WHERE id = " + action.userId;
+        String query = "UPDATE user_actions"
+                + " SET action = '" + action.getAction() + "'"
+                + " WHERE id = " + action.getId();
 
         DMLQuery(query);
     }
@@ -42,7 +48,7 @@ public class ADB extends DB {
             usersRes.add(new Action(
                     res.getInt("id"),
                     res.getNString("action"),
-                    Date.valueOf(res.getNString("createdAt"))
+                    res.getDate("createdAt")
             ));
         }
 
