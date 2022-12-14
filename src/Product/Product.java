@@ -22,7 +22,7 @@ public class Product {
     /*  constractors  */
 
     /* constractor with name && price && expireDate  */
-    public Product(String name, int price, Date expireDate, String type) throws SQLException, ClassNotFoundException {
+    public Product(String name, double price, Date expireDate, String type) throws SQLException, ClassNotFoundException {
         this.name = name;
         this.price = price;
         this.expireDate = expireDate;
