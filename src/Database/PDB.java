@@ -44,15 +44,13 @@ public class PDB extends DB{
 
         DMLQuery(query);
     }
-
-    public static ArrayList<Product> search(String condition) throws SQLException, ClassNotFoundException {
-        String query = "SELECT * FROM products WHERE orderId IS NULL and " + formatCondition(condition);
-
+    
+    private static ArrayList<Product> basicSearch(String query) throws SQLException, ClassNotFoundException {
         ResultSet res = DQLQuery(query);
         
-        ArrayList<Product> usersRes = new ArrayList<>();
+        ArrayList<Product> productsRes = new ArrayList<>();
         while (res.next()) {
-            usersRes.add(new Product(
+            productsRes.add(new Product(
                     res.getInt("id"),
                     res.getNString("name"),
                     res.getFloat("price"),
@@ -63,6 +61,25 @@ public class PDB extends DB{
             ));
         }
         
-        return usersRes;
+        return productsRes;
     }
+
+    public static ArrayList<Product> search(String condition) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM products WHERE orderId IS NULL and " + formatCondition(condition);
+
+        return basicSearch(query);
+    }
+    
+    public static ArrayList<Product> searchInOrders(String condition) throws SQLException, ClassNotFoundException {
+        String query = "SELECT * FROM products WHERE orderId IS NOT NULL and " + formatCondition(condition);
+
+        return basicSearch(query);
+    }
+    
+    public static void addProductToOrder(int productId, int orderId) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE products SET orderId = " + orderId + "WHERE id = " + productId;
+        
+        DMLQuery(query);
+    }
+    
 }
