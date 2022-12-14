@@ -4,9 +4,7 @@ package Database;
  *
  * @author Salah
  */
-
-import User.Action;
-import User.User;
+import User.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -29,37 +27,28 @@ public class UDB extends DB {
 
         ResultSet res = DQLQuery(query);
 
-        if (!res.next()) {
-            return null;
-        }
+        if (!res.next()) return null;
 
-        return new User(
-                res.getInt("id"),
-                res.getNString("name"),
-                res.getNString("userName"),
-                res.getNString("password"),
-                res.getNString("type"),
-                ADB.search("userId = " + res.getInt("id"))
-        );
+        return spesifyUser(res);
     }
 
     public static void add(User user) throws SQLException, ClassNotFoundException {
         String query = "INSERT INTO users (id, name, userName, password, type) "
                 + "VALUES("
-                + user.getId() + ", " 
-                + "'" + user.getName() + "', " 
-                + "'" + user.getUserName() + "', " 
-                + "'" + user.getPassword() + "', " 
-                + "'" + user.getType() +"'"
+                + user.getId() + ", "
+                + "'" + user.getName() + "', "
+                + "'" + user.getUserName() + "', "
+                + "'" + user.getPassword() + "', "
+                + "'" + user.getType() + "'"
                 + ")";
 
         DMLQuery(query);
-        
-        if(user.getActions().isEmpty()) return;
-        
+
+        if (user.getActions().isEmpty()) return;
+
         ArrayList<Action> actions = user.getActions();
         int userId = user.getId();
-        for(int i = 0; i < actions.size(); i++) {
+        for (int i = 0; i < actions.size(); i++) {
             ADB.add(actions.get(i), userId);
         }
     }
@@ -79,11 +68,13 @@ public class UDB extends DB {
                 + " WHERE id = " + user.getId();
 
         DMLQuery(query);
-        
-        if(user.getActions().isEmpty()) return;
-        
+
+        if (user.getActions().isEmpty()) {
+            return;
+        }
+
         ArrayList<Action> actions = user.getActions();
-        for(int i = 0; i < actions.size(); i++) {
+        for (int i = 0; i < actions.size(); i++) {
             ADB.update(actions.get(i));
         }
     }
@@ -92,19 +83,29 @@ public class UDB extends DB {
         String query = "SELECT * FROM users WHERE " + formatCondition(condition);
 
         ResultSet res = DQLQuery(query);
-        
+
         ArrayList<User> usersRes = new ArrayList<>();
         while (res.next()) {
-            usersRes.add(new User(
-                    res.getInt("id"),
-                    res.getNString("name"),
-                    res.getNString("userName"),
-                    res.getNString("password"),
-                    res.getNString("type"),
-                    ADB.search("userId = " + res.getInt("id"))
-            ));
+            usersRes.add(spesifyUser(res));
         }
-        
+
         return usersRes;
+    }
+    
+    public static User spesifyUser(ResultSet res) throws SQLException, ClassNotFoundException {
+        int id = res.getInt("id");
+        String name = res.getNString("name");
+        String userName = res.getNString("userName");
+        String password = res.getNString("password");
+        String type = res.getNString("type");
+        ArrayList<Action> actions = ADB.search("userId = " + res.getInt("id"));
+
+        return switch (type) {
+            case "admin" -> new Admin(id, name, userName, password, type, actions);
+            case "marketing" -> new MarketingEmp(id, name, userName, password, type, actions);
+            case "inventory" -> new InventoryEmp(id, name, userName, password, type, actions);
+            case "sales" -> new SalesEmp(id, name, userName, password, type, actions);
+            default -> null;
+        };
     }
 }

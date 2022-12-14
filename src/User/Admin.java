@@ -4,7 +4,9 @@ package User;
  *
  * @author Abd El-Halim
  */
+import Database.ADB;
 import Database.UDB;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -30,7 +32,7 @@ public class Admin extends User {
 
     /* adduser mathod */
     public void addUser(int userId, String name, String userName, String password, String type) throws SQLException, ClassNotFoundException {
-        UDB.add(new User(userId, name, userName, password, type, new ArrayList<>()));
+        UDB.add(spesifyUser(userId, name, userName, password, type));
     }
 
     /*deleteuser */
@@ -60,6 +62,17 @@ public class Admin extends User {
     /* search user   */
     public ArrayList<User> searchUser(String condition) throws SQLException, ClassNotFoundException {
         return UDB.search(condition);
+    }
+    
+    public static User spesifyUser(int id, String name, String userName, String password, String type) throws SQLException, ClassNotFoundException {
+
+        return switch (type) {
+            case "admin" -> new Admin(id, name, userName, password, type, new ArrayList<>());
+            case "marketing" -> new MarketingEmp(id, name, userName, password, type, new ArrayList<>());
+            case "inventory" -> new InventoryEmp(id, name, userName, password, type, new ArrayList<>());
+            case "sales" -> new SalesEmp(id, name, userName, password, type, new ArrayList<>());
+            default -> null;
+        };
     }
 
 }
