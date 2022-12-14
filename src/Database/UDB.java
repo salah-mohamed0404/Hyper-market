@@ -1,5 +1,12 @@
 package Database;
 
+/**
+ *
+ * @author Salah
+ */
+
+import User.Action;
+import User.User;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -31,20 +38,30 @@ public class UDB extends DB {
                 res.getNString("name"),
                 res.getNString("userName"),
                 res.getNString("password"),
-                res.getNString("type")
+                res.getNString("type"),
+                ADB.search("userId = " + res.getInt("id"))
         );
     }
 
     public static void add(User user) throws SQLException, ClassNotFoundException {
-        String query = "INSERT INTO users VALUES("
-                + user.id + ", " 
-                + "'" + user.name + "', " 
-                + "'" + user.userName + "', " 
-                + "'" + user.password + "', " 
-                + "'" + user.type +"'"
+        String query = "INSERT INTO users (id, name, userName, password, type) "
+                + "VALUES("
+                + user.getId() + ", " 
+                + "'" + user.getName() + "', " 
+                + "'" + user.getUserName() + "', " 
+                + "'" + user.getPassword() + "', " 
+                + "'" + user.getType() +"'"
                 + ")";
 
         DMLQuery(query);
+        
+        if(user.getActions().isEmpty()) return;
+        
+        ArrayList<Action> actions = user.getActions();
+        int userId = user.getId();
+        for(int i = 0; i < actions.size(); i++) {
+            ADB.add(actions.get(i), userId);
+        }
     }
 
     public static void delete(String condition) throws SQLException, ClassNotFoundException {
@@ -55,13 +72,20 @@ public class UDB extends DB {
 
     public static void update(User user) throws SQLException, ClassNotFoundException {
         String query = "UPDATE users SET "
-                + " name = '" + user.name + "', "
-                + " userName = '" + user.userName + "', "
-                + " password = '" + user.password + "', "
-                + " type = '" + user.type + "'"
-                + " WHERE id = " + user.id;
+                + " name = '" + user.getName() + "', "
+                + " userName = '" + user.getUserName() + "', "
+                + " password = '" + user.getPassword() + "', "
+                + " type = '" + user.getType() + "'"
+                + " WHERE id = " + user.getId();
 
         DMLQuery(query);
+        
+        if(user.getActions().isEmpty()) return;
+        
+        ArrayList<Action> actions = user.getActions();
+        for(int i = 0; i < actions.size(); i++) {
+            ADB.update(actions.get(i));
+        }
     }
 
     public static ArrayList<User> search(String condition) throws SQLException, ClassNotFoundException {
@@ -76,7 +100,8 @@ public class UDB extends DB {
                     res.getNString("name"),
                     res.getNString("userName"),
                     res.getNString("password"),
-                    res.getNString("type")
+                    res.getNString("type"),
+                    ADB.search("userId = " + res.getInt("id"))
             ));
         }
         
