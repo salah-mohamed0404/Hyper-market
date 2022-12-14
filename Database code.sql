@@ -20,7 +20,7 @@ GO
 
 CREATE TABLE user_actions(
 	id INT PRIMARY KEY IDENTITY(1, 1),
-	[action] NVARCHAR NOT NULL,
+	[action] NVARCHAR(100) NOT NULL,
 	createdAt DATE,
 	userId INT REFERENCES users(id) ON DELETE CASCADE
 )
