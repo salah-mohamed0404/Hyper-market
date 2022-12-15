@@ -1115,7 +1115,7 @@
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="278" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="jLabel19" pref="221" max="32767" attributes="0"/>
+                                          <Component id="jLabel19" max="32767" attributes="0"/>
                                           <Component id="jPanel9" pref="221" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -1220,9 +1220,9 @@
                                   <Data value="50"/>
                                   <Data value="70"/>
                                 </Column>
-                                <Column editable="false" title="Offer Price" type="java.lang.Object">
+                                <Column editable="true" title="Offer Price" type="java.lang.Object">
                                   <Data value="15"/>
-                                  <Data value="no offer"/>
+                                  <Data value="No Offer"/>
                                   <Data value="50"/>
                                 </Column>
                                 <Column editable="false" title="Expire Date" type="java.lang.Object">

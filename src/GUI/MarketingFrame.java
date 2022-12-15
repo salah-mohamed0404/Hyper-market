@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI;
+package market.marketing;
 
 import java.awt.Color;
 import javax.swing.*;
@@ -801,7 +801,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "sad", "20", "15", "154", "normal"},
-                {"2", "shehab", "50", "no offer", "99885", "returned"},
+                {"2", "shehab", "50", "No Offer", "99885", "returned"},
                 {"3", "ahmed", "70", "50", "666", "damaged"}
             },
             new String [] {
@@ -809,7 +809,7 @@ public class MarketingFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1280,7 +1280,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         Pname.setText(name);
         PPrice.setText(price);
         if(offerPrice.equals("no offer"))
-            POfferPrice.setText("No Offer Price");
+            POfferPrice.setText("No Offer");
         else
             POfferPrice.setText(offerPrice);
         
@@ -1294,7 +1294,20 @@ public class MarketingFrame extends javax.swing.JFrame {
 
     private void Add_EmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Add_EmployeeActionPerformed
         // TODO add your handling code here:
-       
+        DefaultTableModel table = (DefaultTableModel) jTable2.getModel();
+        int offerPriceInInt = Integer.parseInt((String)POfferPrice.getText());
+        int price = Integer.parseInt ((String) jTable2.getValueAt(jTable2.getSelectedRow(), 2) );
+        String offerPriceInString = (String)jTable2.getValueAt(jTable2.getSelectedRow(), 2);
+        
+        if(offerPriceInInt > price){
+            JOptionPane.showMessageDialog(this, "Offer price cannot be bigger than the price", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            jTable2.setValueAt(POfferPrice.getText(), jTable2.getSelectedRow(), 3);
+        }
+        
+        
+        
+        
     }//GEN-LAST:event_Add_EmployeeActionPerformed
 
     private void PTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PTypeActionPerformed
