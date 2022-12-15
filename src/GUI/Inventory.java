@@ -4,7 +4,8 @@
  */
 package GUI;
 
-
+import Product.*;
+import java.sql.Date;
 import java.awt.Color;
 import javax.swing.*;
 import java.util.*;
@@ -1178,11 +1179,19 @@ public class Inventory extends javax.swing.JFrame {
 
     private void addProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductBtnActionPerformed
         // TODO add your handling code here:
-        if(idAddField.getText().equals("")||nameAddField.getText().equals("")||priceAddField.getText().equals("")||dateAddField.getText().equals("")){
+        if(nameAddField.getText().equals("")||priceAddField.getText().equals("")||dateAddField.getText().equals("")){
             JOptionPane.showMessageDialog(this, "please Enter All Data !");
             
         }else{
-            String data[] = {idAddField.getText(),nameAddField.getText(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText()};
+            try{
+            Product product = new Product(
+        nameAddField.getText(),
+        Double.parseDouble(priceAddField.getText()),
+    Date.valueOf(dateAddField.getText()),
+        typeAddBox.getSelectedItem().toString());
+            
+                
+            String data[] = {String.valueOf(product.getId()),nameAddField.getText(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText()};
             DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
             tb1Model.addRow(data);
             JOptionPane.showMessageDialog(this, "successfully added");
@@ -1191,6 +1200,11 @@ public class Inventory extends javax.swing.JFrame {
             priceAddField.setText("");
             dateAddField.setText("");
             typeAddBox.setSelectedIndex(0);
+            } catch(Exception  error){
+            
+               JOptionPane.showMessageDialog(this, error.getMessage());
+            }
+            
         }
         
     }//GEN-LAST:event_addProductBtnActionPerformed
