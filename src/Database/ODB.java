@@ -34,7 +34,7 @@ public class ODB extends DB{
         DMLQuery(query);
     }
     
-    public static ArrayList<Order> basicSearch(String query) throws SQLException, ClassNotFoundException {
+    private static ArrayList<Order> basicSearch(String query) throws SQLException, ClassNotFoundException {
         ResultSet res = DQLQuery(query);
         
         ArrayList<Order> ordersRes = new ArrayList<>();
