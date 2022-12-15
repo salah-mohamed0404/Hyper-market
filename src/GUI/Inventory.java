@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
-
+import Database.*;
 import Product.*;
 import java.sql.Date;
 import java.awt.Color;
@@ -16,10 +16,40 @@ import javax.swing.table.TableRowSorter;
  * @author shehab
  */
 public class Inventory extends javax.swing.JFrame {
-
-  
+    public void updateTable(){
+         try{
+            ArrayList<Product> products = PDB.search("*");
+          
+            for(int i = 0 ; i < products.size();i++){
+                DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
+                String finalOffer="no offer";
+                if(products.get(i).getOfferPrice()!=-1.0){
+//                    finalOffer="no offer";
+                        finalOffer=String.valueOf(products.get(i).getOfferPrice());
+                }
+                products.get(i);
+                String data[] = {String.valueOf(products.get(i).getId()),products.get(i).getName(),String.valueOf(products.get(i).getPrice()),products.get(i).getType(),products.get(i).getEpireDate().toString(),finalOffer};
+            
+            tb1Model.addRow(data);
+            }
+            
+             
+       }catch(Exception  error){
+           JOptionPane.showMessageDialog(productsTable, error.getMessage());
+       
+       }
+    }
+    public void defaultTable(){
+        while (productsTable.getRowCount()>0)
+          {
+               DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
+             tb1Model.removeRow(0);
+          }
+    }
     public Inventory() {
         initComponents();
+         updateTable();
+        
     }
 
     /**
@@ -69,8 +99,6 @@ public class Inventory extends javax.swing.JFrame {
         deleteProduct = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         addProductBtn = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        idAddField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         nameAddField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -94,6 +122,14 @@ public class Inventory extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         typeUpdateBox = new javax.swing.JComboBox<>();
         Notifications = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -261,12 +297,12 @@ public class Inventory extends javax.swing.JFrame {
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
                 .addComponent(notifications, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
 
-        The_Main_Panel.add(Side_Bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 770));
+        The_Main_Panel.add(Side_Bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 800));
 
         jTabbedPane1.setBackground(java.awt.Color.white);
         jTabbedPane1.setForeground(new java.awt.Color(255, 255, 255));
@@ -332,7 +368,7 @@ public class Inventory extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addComponent(jLabel3)
-                .addContainerGap(387, Short.MAX_VALUE))
+                .addContainerGap(417, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);
@@ -505,7 +541,7 @@ public class Inventory extends javax.swing.JFrame {
                     .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48)
                 .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manage Admin Account", Manage_admin);
@@ -547,14 +583,14 @@ public class Inventory extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Price", "Type", "Expire Date"
+                "ID", "Name", "Price", "Type", "Expire Date", "Offers"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -577,11 +613,12 @@ public class Inventory extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(productsTable);
         if (productsTable.getColumnModel().getColumnCount() > 0) {
-            productsTable.getColumnModel().getColumn(0).setMinWidth(85);
-            productsTable.getColumnModel().getColumn(1).setMinWidth(200);
+            productsTable.getColumnModel().getColumn(0).setMinWidth(80);
+            productsTable.getColumnModel().getColumn(1).setMinWidth(160);
             productsTable.getColumnModel().getColumn(2).setMinWidth(85);
-            productsTable.getColumnModel().getColumn(3).setMinWidth(125);
-            productsTable.getColumnModel().getColumn(4).setMinWidth(195);
+            productsTable.getColumnModel().getColumn(3).setMinWidth(100);
+            productsTable.getColumnModel().getColumn(4).setMinWidth(160);
+            productsTable.getColumnModel().getColumn(5).setMinWidth(105);
         }
 
         deleteProduct.setBackground(new java.awt.Color(255, 115, 29));
@@ -637,13 +674,6 @@ public class Inventory extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel6.setText("ID");
-
-        idAddField.setForeground(new java.awt.Color(5, 58, 102));
-
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 115, 29));
@@ -658,7 +688,16 @@ public class Inventory extends javax.swing.JFrame {
 
         priceAddField.setForeground(new java.awt.Color(5, 58, 102));
 
-        dateAddField.setForeground(new java.awt.Color(5, 58, 102));
+        dateAddField.setForeground(new java.awt.Color(204, 204, 204));
+        dateAddField.setText("yyyy,mm,dd");
+        dateAddField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                dateAddFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                dateAddFieldFocusLost(evt);
+            }
+        });
 
         jLabel16.setBackground(new java.awt.Color(255, 255, 255));
         jLabel16.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -688,10 +727,6 @@ public class Inventory extends javax.swing.JFrame {
                         .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(idAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(nameAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -713,11 +748,7 @@ public class Inventory extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idAddField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameAddField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
@@ -735,7 +766,7 @@ public class Inventory extends javax.swing.JFrame {
                         .addComponent(dateAddField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(typeAddBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addComponent(addProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -803,6 +834,7 @@ public class Inventory extends javax.swing.JFrame {
         priceUpdateField.setForeground(new java.awt.Color(5, 58, 102));
 
         dateUpdateField.setForeground(new java.awt.Color(5, 58, 102));
+        dateUpdateField.setEnabled(false);
 
         jLabel27.setBackground(new java.awt.Color(255, 255, 255));
         jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -860,7 +892,7 @@ public class Inventory extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idUpdateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
@@ -889,7 +921,7 @@ public class Inventory extends javax.swing.JFrame {
         Mnagae_employeeLayout.setHorizontalGroup(
             Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(46, Short.MAX_VALUE)
                 .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Mnagae_employeeLayout.createSequentialGroup()
                         .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -903,7 +935,7 @@ public class Inventory extends javax.swing.JFrame {
                                     .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(37, 37, 37))
+                        .addGap(46, 46, 46))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Mnagae_employeeLayout.createSequentialGroup()
                         .addComponent(deleteProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(303, 303, 303))
@@ -941,31 +973,117 @@ public class Inventory extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(deleteProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(14, 14, 14))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manage Employees", Mnagae_employee);
 
         Notifications.setBackground(new java.awt.Color(255, 255, 255));
 
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Product ID", "Product Name", "Amount"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel6.setText("Amount is end soon");
+
+        jLabel18.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel18.setText("Expire date is come soon");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Product ID", "Product Name", "Expire Date"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        jPanel5.setBackground(new java.awt.Color(255, 115, 29));
+        jPanel5.setPreferredSize(new java.awt.Dimension(100, 10));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 215, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 4, Short.MAX_VALUE)
+        );
+
+        jLabel19.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(5, 58, 102));
+        jLabel19.setText("Notification");
+
         javax.swing.GroupLayout NotificationsLayout = new javax.swing.GroupLayout(Notifications);
         Notifications.setLayout(NotificationsLayout);
         NotificationsLayout.setHorizontalGroup(
             NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel19)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(278, 278, 278))
+            .addGroup(NotificationsLayout.createSequentialGroup()
+                .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NotificationsLayout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
         NotificationsLayout.setVerticalGroup(
             NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 779, Short.MAX_VALUE)
+            .addGroup(NotificationsLayout.createSequentialGroup()
+                .addGap(62, 62, 62)
+                .addComponent(jLabel19)
+                .addGap(6, 6, 6)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
+                .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab4", Notifications);
 
-        The_Main_Panel.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, -40, 800, 810));
+        The_Main_Panel.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, -40, 800, 840));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -995,9 +1113,14 @@ public class Inventory extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jTabbedPane1.setSelectedIndex(1);
-
+       
+        
     }//GEN-LAST:event_jButton2ActionPerformed
-
+   /*public void UpdateAccount(){
+        InventoryEmp user = new InventoryEmp();
+       currentPassword.setText(user.getPassword());
+       currentUserName.setText(user.getName());
+   }*/
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         
@@ -1151,10 +1274,21 @@ public class Inventory extends javax.swing.JFrame {
     private void deleteProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductActionPerformed
         // TODO add your handling code here:
         DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
-        
+       
         //delete row
         if(productsTable.getSelectedRowCount()==1){
+            try{
+               String tbId =  tb1Model.getValueAt(productsTable.getSelectedRow(),0).toString();
+               PDB.delete(Integer.parseInt(tbId));
+                
+            }catch(Exception  error){
+                System.out.println(error.getMessage());
+                return;
+            }
+            
             tb1Model.removeRow(productsTable.getSelectedRow());
+
+            
         }else{
             if(productsTable.getRowCount()==0){
                 JOptionPane.showMessageDialog(this, "Table is Empty.");
@@ -1179,6 +1313,13 @@ public class Inventory extends javax.swing.JFrame {
 
     private void addProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductBtnActionPerformed
         // TODO add your handling code here:
+        
+        try{
+            Double.parseDouble(priceAddField.getText());
+            Date.valueOf(dateAddField.getText());
+        }catch(Exception  error){
+            JOptionPane.showMessageDialog(this, "please enter a valid value");
+        }
         if(nameAddField.getText().equals("")||priceAddField.getText().equals("")||dateAddField.getText().equals("")){
             JOptionPane.showMessageDialog(this, "please Enter All Data !");
             
@@ -1195,14 +1336,14 @@ public class Inventory extends javax.swing.JFrame {
             DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
             tb1Model.addRow(data);
             JOptionPane.showMessageDialog(this, "successfully added");
-            idAddField.setText("");
+         
             nameAddField.setText("");
             priceAddField.setText("");
             dateAddField.setText("");
             typeAddBox.setSelectedIndex(0);
             } catch(Exception  error){
             
-               JOptionPane.showMessageDialog(this, error.getMessage());
+            
             }
             
         }
@@ -1222,6 +1363,7 @@ public class Inventory extends javax.swing.JFrame {
     }//GEN-LAST:event_updateProductBtnMouseExited
 
     private void updateProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductBtnActionPerformed
+        
         DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
         
         if(productsTable.getSelectedRowCount()==1){
@@ -1230,7 +1372,18 @@ public class Inventory extends javax.swing.JFrame {
         String updatePrice =priceUpdateField.getText();
         String updateType =(String) typeUpdateBox.getSelectedItem();
         String updateDate =dateUpdateField.getText();
-        
+    
+        try {
+            Double.parseDouble(priceUpdateField.getText());
+                Product p = PDB.search("id = " + Integer.valueOf(updateId)).get(0);
+                p.setName(updateName);
+                p.setPrice(Double.parseDouble(updatePrice));
+                p.setType(updateType);
+            } catch (Exception  error ) {
+                     JOptionPane.showMessageDialog(this, "Enter a valid value");
+                     return;
+            }
+    
         tb1Model.setValueAt(updateId,productsTable.getSelectedRow(),0 );
         tb1Model.setValueAt(updateName,productsTable.getSelectedRow(),1 );
         tb1Model.setValueAt(updatePrice,productsTable.getSelectedRow(),2 );
@@ -1299,6 +1452,19 @@ public class Inventory extends javax.swing.JFrame {
         // TODO add your handling code here:
         jTabbedPane1.setSelectedIndex(3);
     }//GEN-LAST:event_notificationsActionPerformed
+
+    private void dateAddFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dateAddFieldFocusGained
+       if(dateAddField.getText().trim().equals("yyyy,mm,dd")){
+            dateAddField.setText("");
+        }
+        dateAddField.setForeground(new Color(5,58,102));
+    }//GEN-LAST:event_dateAddFieldFocusGained
+
+    private void dateAddFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dateAddFieldFocusLost
+        if(dateAddField.getText().trim().equals("")){
+            dateAddField.setText("yyyy,mm,dd");
+        }
+    }//GEN-LAST:event_dateAddFieldFocusLost
       public void filter ( String query){
         DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
 
@@ -1359,7 +1525,6 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JTextField dateAddField;
     private javax.swing.JTextField dateUpdateField;
     private javax.swing.JButton deleteProduct;
-    private javax.swing.JTextField idAddField;
     private javax.swing.JTextField idUpdateField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1376,6 +1541,8 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -1392,10 +1559,15 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField nameAddField;
     private javax.swing.JTextField nameUpdateField;
     private javax.swing.JButton notifications;
