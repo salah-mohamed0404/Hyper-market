@@ -92,7 +92,7 @@ public class UDB extends DB {
         return usersRes;
     }
     
-    public static User spesifyUser(ResultSet res) throws SQLException, ClassNotFoundException {
+    private static User spesifyUser(ResultSet res) throws SQLException, ClassNotFoundException {
         int id = res.getInt("id");
         String name = res.getNString("name");
         String userName = res.getNString("userName");

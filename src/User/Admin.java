@@ -64,7 +64,7 @@ public class Admin extends User {
         return UDB.search(condition);
     }
     
-    public static User spesifyUser(int id, String name, String userName, String password, String type) throws SQLException, ClassNotFoundException {
+    private static User spesifyUser(int id, String name, String userName, String password, String type) throws SQLException, ClassNotFoundException {
 
         return switch (type) {
             case "admin" -> new Admin(id, name, userName, password, type, new ArrayList<>());
