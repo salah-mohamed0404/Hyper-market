@@ -14,7 +14,7 @@ public class ODB extends DB{
         if(order.getProducts().isEmpty()) ;
         
         String query = "INSERT INTO orders(createdAt, userId) "
-                + "values (" + order.getCreateAt() + ", " + order.getUserId() + ")";
+                + "values ('" + order.getCreateAt() + "', " + order.getUserId() + ")";
         
         DMLQuery(query);
         
@@ -64,6 +64,14 @@ public class ODB extends DB{
     }
     
     public static void cancelOrder(int orderId) throws SQLException, ClassNotFoundException {
+        Order order = search("id = " + orderId).get(0);
+        
+        ArrayList<Product> products = order.getProducts();
+        for (int i = 0; i < products.size(); i++) {
+            products.get(i).setType("returned");
+            PDB.removeFromOrderProductToOrder(products.get(i).getId());
+        }
+        
         String query = "UPDATE orders SET isCanceled = 1 WHERE id = " + orderId;
         
         DMLQuery(query);

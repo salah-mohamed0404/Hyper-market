@@ -39,6 +39,64 @@ public class Inventory extends javax.swing.JFrame {
        
        }
     }
+    
+    
+     public void updateNfnCount(){
+          while (amountTable.getRowCount()>0)
+          {
+               DefaultTableModel tb1Model = (DefaultTableModel) amountTable.getModel();
+             tb1Model.removeRow(0);
+          } 
+         try{
+           ArrayList<ArrayList> products = PDB.getAlmostRunOut();
+          
+            for(int i = 0 ; i < products.get(0).size();i++){
+                DefaultTableModel tb1Model = (DefaultTableModel) amountTable.getModel();
+                if(Integer.parseInt( String.valueOf(products.get(1).get(i)))<=2){
+                        String data[] = {String.valueOf(products.get(0).get(i)),String.valueOf(products.get(1).get(i))};
+            
+                       tb1Model.addRow(data);
+                }
+                
+               
+            }
+            
+             
+       }catch(Exception  error){
+           JOptionPane.showMessageDialog(amountTable, error.getMessage());
+       
+       }
+    }
+    
+    
+     
+     
+    public void updateNfnExpire(){
+         try{
+            while (expireTable.getRowCount()>0)
+          {
+               DefaultTableModel tb1Model = (DefaultTableModel) expireTable.getModel();
+             tb1Model.removeRow(0);
+          } 
+             
+           ArrayList<Product> products = PDB.getAlmostWeekToexpire();
+          
+            for(int i = 0 ; i < products.size();i++){
+                DefaultTableModel tb1Model = (DefaultTableModel) expireTable.getModel();
+                
+                
+                String data[] = {String.valueOf(products.get(i).getId()),String.valueOf(products.get(i).getName()),String.valueOf(products.get(i).getEpireDate())};
+            
+            tb1Model.addRow(data);
+            }
+            
+             
+       }catch(Exception  error){
+           JOptionPane.showMessageDialog(expireTable, error.getMessage());
+       
+       }
+    } 
+    
     public void defaultTable(){
         while (productsTable.getRowCount()>0)
           {
@@ -49,7 +107,7 @@ public class Inventory extends javax.swing.JFrame {
     public Inventory() {
         initComponents();
          updateTable();
-        
+       
     }
 
     /**
@@ -123,11 +181,11 @@ public class Inventory extends javax.swing.JFrame {
         typeUpdateBox = new javax.swing.JComboBox<>();
         Notifications = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        amountTable = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        expireTable = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
 
@@ -984,18 +1042,38 @@ public class Inventory extends javax.swing.JFrame {
 
         Notifications.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        amountTable.setForeground(new java.awt.Color(5, 58, 102));
+        amountTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Product ID", "Product Name", "Amount"
+                "Product Name", "Amount"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        amountTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        amountTable.setSelectionBackground(new java.awt.Color(255, 115, 29));
+        amountTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane2.setViewportView(amountTable);
+        if (amountTable.getColumnModel().getColumnCount() > 0) {
+            amountTable.getColumnModel().getColumn(0).setMinWidth(200);
+            amountTable.getColumnModel().getColumn(1).setMinWidth(150);
+        }
 
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 115, 29));
@@ -1005,18 +1083,18 @@ public class Inventory extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(255, 115, 29));
         jLabel18.setText("Expire date is come soon");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        expireTable.setForeground(new java.awt.Color(5, 58, 102));
+        expireTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Product ID", "Product Name", "Expire Date"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        expireTable.setSelectionBackground(new java.awt.Color(255, 115, 29));
+        expireTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setViewportView(expireTable);
 
         jPanel5.setBackground(new java.awt.Color(255, 115, 29));
         jPanel5.setPreferredSize(new java.awt.Dimension(100, 10));
@@ -1049,11 +1127,11 @@ public class Inventory extends javax.swing.JFrame {
             .addGroup(NotificationsLayout.createSequentialGroup()
                 .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(NotificationsLayout.createSequentialGroup()
-                        .addGap(118, 118, 118)
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(NotificationsLayout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(NotificationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NotificationsLayout.createSequentialGroup()
@@ -1326,13 +1404,13 @@ public class Inventory extends javax.swing.JFrame {
         }else{
             try{
             Product product = new Product(
-        nameAddField.getText(),
+        nameAddField.getText().toLowerCase(),
         Double.parseDouble(priceAddField.getText()),
     Date.valueOf(dateAddField.getText()),
         typeAddBox.getSelectedItem().toString());
             
                 
-            String data[] = {String.valueOf(product.getId()),nameAddField.getText(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText()};
+            String data[] = {String.valueOf(product.getId()),nameAddField.getText().toLowerCase(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText()};
             DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
             tb1Model.addRow(data);
             JOptionPane.showMessageDialog(this, "successfully added");
@@ -1451,6 +1529,8 @@ public class Inventory extends javax.swing.JFrame {
     private void notificationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notificationsActionPerformed
         // TODO add your handling code here:
         jTabbedPane1.setSelectedIndex(3);
+         updateNfnCount();
+        updateNfnExpire();
     }//GEN-LAST:event_notificationsActionPerformed
 
     private void dateAddFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dateAddFieldFocusGained
@@ -1464,6 +1544,7 @@ public class Inventory extends javax.swing.JFrame {
         if(dateAddField.getText().trim().equals("")){
             dateAddField.setText("yyyy,mm,dd");
         }
+       
     }//GEN-LAST:event_dateAddFieldFocusLost
       public void filter ( String query){
         DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
@@ -1520,11 +1601,13 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JPanel The_Main_Panel;
     private javax.swing.JPanel Update_Account;
     private javax.swing.JButton addProductBtn;
+    private javax.swing.JTable amountTable;
     public javax.swing.JLabel currentPassword;
     private javax.swing.JLabel currentUserName;
     private javax.swing.JTextField dateAddField;
     private javax.swing.JTextField dateUpdateField;
     private javax.swing.JButton deleteProduct;
+    private javax.swing.JTable expireTable;
     private javax.swing.JTextField idUpdateField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1566,8 +1649,6 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField nameAddField;
     private javax.swing.JTextField nameUpdateField;
     private javax.swing.JButton notifications;

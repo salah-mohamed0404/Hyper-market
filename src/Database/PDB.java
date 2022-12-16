@@ -82,4 +82,44 @@ public class PDB extends DB{
         DMLQuery(query);
     }
     
+    public static void removeFromOrderProductToOrder(int productId) throws SQLException, ClassNotFoundException {
+        String query = "UPDATE products SET orderId = NULL " + "WHERE id = " + productId;
+        
+        DMLQuery(query);
+    }
+    
+    public static ArrayList<Product> getAlmostWeekToexpire() throws SQLException, ClassNotFoundException {
+        return search("expireDate between (SELECT dateadd(WEEK, 0, getdate())) and (SELECT dateadd(WEEK, 1, getdate())) "
+                + "AND type != 'damaged'");
+    }
+    
+    public static int getQantity(String productName) throws SQLException, ClassNotFoundException {
+        String query = "SELECT COUNT(name) FROM products WHERE orderId IS NULL AND type != 'damaged' AND name = '" + productName + "'";
+        
+        ResultSet res = DQLQuery(query);
+        if(res.next()) return res.getInt(1);
+        
+        return -1;
+    }
+    
+    public static ArrayList<ArrayList> getAlmostRunOut() throws SQLException, ClassNotFoundException {
+        String query = "SELECT DISTINCT name FROM products WHERE orderId IS NULL AND type != 'damaged'";
+        
+        ResultSet uniqueProductNames = DQLQuery(query);
+        
+        ArrayList<ArrayList> productNameAndQantity = new ArrayList<>();
+        productNameAndQantity.add(new ArrayList<String>());
+        productNameAndQantity.add(new ArrayList<Integer>());
+        
+        while(uniqueProductNames.next()) {
+            String productName = uniqueProductNames.getNString("name");
+            productNameAndQantity.get(0).add(productName);
+            
+            int productQantity = getQantity(productName);
+            productNameAndQantity.get(1).add(productQantity);
+        }
+        
+        return productNameAndQantity;
+    }
+    
 }

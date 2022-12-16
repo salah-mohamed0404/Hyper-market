@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package market.marketing;
+package GUI;
 
 import java.awt.Color;
 import javax.swing.*;
@@ -305,6 +305,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 115, 29));
         jLabel3.setText("Welcome, MarketingName");
 
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/market/imgs/adminLogo.png"))); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(250, 250));
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
@@ -314,27 +315,27 @@ public class MarketingFrame extends javax.swing.JFrame {
             .addGroup(HomeLayout.createSequentialGroup()
                 .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(314, 314, 314)
+                        .addGap(253, 253, 253)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(HomeLayout.createSequentialGroup()
                         .addGap(287, 287, 287)
                         .addComponent(jLabel3)))
-                .addContainerGap(294, Short.MAX_VALUE))
+                .addContainerGap(306, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomeLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(259, 259, 259)
+                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62)
                 .addComponent(jLabel3)
                 .addContainerGap(490, Short.MAX_VALUE))
@@ -801,7 +802,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", "sad", "20", "15", "154", "normal"},
-                {"2", "shehab", "50", "No Offer", "99885", "returned"},
+                {"2", "shehab", "50", "no offer", "99885", "returned"},
                 {"3", "ahmed", "70", "50", "666", "damaged"}
             },
             new String [] {
@@ -809,7 +810,7 @@ public class MarketingFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -993,7 +994,7 @@ public class MarketingFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(278, 278, 278)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                             .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
@@ -1280,7 +1281,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         Pname.setText(name);
         PPrice.setText(price);
         if(offerPrice.equals("no offer"))
-            POfferPrice.setText("No Offer");
+            POfferPrice.setText("No Offer Price");
         else
             POfferPrice.setText(offerPrice);
         
@@ -1294,20 +1295,7 @@ public class MarketingFrame extends javax.swing.JFrame {
 
     private void Add_EmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Add_EmployeeActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel table = (DefaultTableModel) jTable2.getModel();
-        int offerPriceInInt = Integer.parseInt((String)POfferPrice.getText());
-        int price = Integer.parseInt ((String) jTable2.getValueAt(jTable2.getSelectedRow(), 2) );
-        String offerPriceInString = (String)jTable2.getValueAt(jTable2.getSelectedRow(), 2);
-        
-        if(offerPriceInInt > price){
-            JOptionPane.showMessageDialog(this, "Offer price cannot be bigger than the price", "Error", JOptionPane.ERROR_MESSAGE);
-        }else{
-            jTable2.setValueAt(POfferPrice.getText(), jTable2.getSelectedRow(), 3);
-        }
-        
-        
-        
-        
+       
     }//GEN-LAST:event_Add_EmployeeActionPerformed
 
     private void PTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PTypeActionPerformed
