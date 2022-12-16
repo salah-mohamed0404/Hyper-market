@@ -66,7 +66,7 @@ public class Product {
     public double getPrice() {
         return this.price;
     }
-
+    
     public void setPrice(double price) throws SQLException, ClassNotFoundException {
         this.price = price;
         // this to updata at data base
@@ -93,8 +93,8 @@ public class Product {
     public Date getAddedAtDate() {
         return this.addedAt;
     }
-
     /* type mathods*/
+
     public String getType() {
         return this.type;
     }

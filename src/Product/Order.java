@@ -21,7 +21,8 @@ public class Order {
     private int userId ;
     //************constructors**************//
 
-    public Order() {
+    public Order(int userId) {
+        this.userId = userId;
         this.createdAt=new Date(System.currentTimeMillis());
     }
 
@@ -32,12 +33,17 @@ public class Order {
     }
 
     public Order(int id, Date createdAt, ArrayList<Product>products,int userId) {
+        this.id = id;
         this.products =products;
         this.userId= userId;
         this.createdAt = createdAt;
     }
 
     //**************Getters*************//
+    public int getId() {
+        return id;
+    }
+    
     public ArrayList<Product> getProducts() {
         return products;
     }
