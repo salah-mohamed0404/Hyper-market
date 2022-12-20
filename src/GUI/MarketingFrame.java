@@ -14,6 +14,9 @@ import Product.*;
 import javax.swing.table.TableModel;
 import java.sql.Date;
 import User.User;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author shehab
@@ -23,9 +26,18 @@ public class MarketingFrame extends javax.swing.JFrame {
     /**
      * Creates new form MarketingFrame
      */
+    User user ;
     public MarketingFrame(User u) {
         initComponents();
+        user = u;
+        marketingWelcome.setText("Welcome, "+user.getName());
+        currentName.setText(user.getName());
+        currentUserName.setText(user.getUserName());
+        currentPassword.setText(user.getPassword());
         
+        nameField.setText(user.getName());
+        userNameField.setText(user.getUserName());
+        passwordField.setText(user.getPassword());
         //Add current products to Make reports Table
         try{
             
@@ -109,8 +121,9 @@ public class MarketingFrame extends javax.swing.JFrame {
         Home = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        marketingWelcome = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         Manage_Marketing = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         currentPassword = new javax.swing.JLabel();
@@ -125,6 +138,10 @@ public class MarketingFrame extends javax.swing.JFrame {
         userNameField = new javax.swing.JTextField();
         passwordField = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        name = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        currentName = new javax.swing.JLabel();
         Make_Reports = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -366,32 +383,36 @@ public class MarketingFrame extends javax.swing.JFrame {
             .addGap(0, 4, Short.MAX_VALUE)
         );
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel3.setText("Welcome, MarketingName");
+        marketingWelcome.setBackground(new java.awt.Color(0, 0, 0));
+        marketingWelcome.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        marketingWelcome.setForeground(new java.awt.Color(255, 115, 29));
+        marketingWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel6.setPreferredSize(new java.awt.Dimension(250, 250));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/market/imgs/adminLogo.png"))); // NOI18N
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
         Home.setLayout(HomeLayout);
         HomeLayout.setHorizontalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
-                .addContainerGap(316, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(305, 305, 305))
             .addGroup(HomeLayout.createSequentialGroup()
                 .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomeLayout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(333, 333, 333)
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(332, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(marketingWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(273, 273, 273))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,12 +420,15 @@ public class MarketingFrame extends javax.swing.JFrame {
                 .addGap(48, 48, 48)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62)
-                .addComponent(jLabel3)
-                .addContainerGap(487, Short.MAX_VALUE))
+                .addComponent(marketingWelcome)
+                .addContainerGap(513, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);
@@ -419,11 +443,10 @@ public class MarketingFrame extends javax.swing.JFrame {
 
         currentPassword.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         currentPassword.setForeground(new java.awt.Color(5, 58, 102));
-        currentPassword.setText("marketing");
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel8.setText("Current Password   :");
+        jLabel8.setText("Current Password :");
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 115, 29));
@@ -431,7 +454,6 @@ public class MarketingFrame extends javax.swing.JFrame {
 
         currentUserName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
         currentUserName.setForeground(new java.awt.Color(5, 58, 102));
-        currentUserName.setText("marketing");
 
         jPanel8.setBackground(new java.awt.Color(255, 115, 29));
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 10));
@@ -464,7 +486,6 @@ public class MarketingFrame extends javax.swing.JFrame {
 
         userNameField.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         userNameField.setForeground(new java.awt.Color(5, 58, 102));
-        userNameField.setText(currentUserName.getText());
         userNameField.setToolTipText("");
         userNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,65 +523,78 @@ public class MarketingFrame extends javax.swing.JFrame {
             }
         });
 
+        name.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        name.setForeground(new java.awt.Color(255, 115, 29));
+        name.setText("Name: ");
+
+        nameField.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        nameField.setForeground(new java.awt.Color(5, 58, 102));
+        nameField.setToolTipText("");
+        nameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Update_AccountLayout = new javax.swing.GroupLayout(Update_Account);
         Update_Account.setLayout(Update_AccountLayout);
         Update_AccountLayout.setHorizontalGroup(
             Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Update_AccountLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74))
             .addGroup(Update_AccountLayout.createSequentialGroup()
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Update_AccountLayout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addComponent(jLabel12))
                     .addGroup(Update_AccountLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
                         .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addGap(60, 60, 60)
+                            .addComponent(jLabel14)
+                            .addComponent(name))
+                        .addGap(36, 36, 36)
                         .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(passwordField))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Update_AccountLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                            .addComponent(passwordField)
+                            .addComponent(userNameField)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         Update_AccountLayout.setVerticalGroup(
             Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Update_AccountLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
-                .addGap(64, 64, 64)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel29.setText("Name :");
+
+        currentName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentName.setForeground(new java.awt.Color(5, 58, 102));
 
         javax.swing.GroupLayout Manage_MarketingLayout = new javax.swing.GroupLayout(Manage_Marketing);
         Manage_Marketing.setLayout(Manage_MarketingLayout);
         Manage_MarketingLayout.setHorizontalGroup(
             Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Manage_MarketingLayout.createSequentialGroup()
-                .addGap(227, 227, 227)
-                .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Update_Account, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(Manage_MarketingLayout.createSequentialGroup()
-                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Manage_MarketingLayout.createSequentialGroup()
                 .addContainerGap(165, Short.MAX_VALUE)
                 .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -569,6 +603,23 @@ public class MarketingFrame extends javax.swing.JFrame {
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 517, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(140, 140, 140))
+            .addGroup(Manage_MarketingLayout.createSequentialGroup()
+                .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Manage_MarketingLayout.createSequentialGroup()
+                        .addGap(239, 239, 239)
+                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel8))
+                        .addGap(36, 36, 36)
+                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Manage_MarketingLayout.createSequentialGroup()
+                        .addGap(246, 246, 246)
+                        .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Manage_MarketingLayout.setVerticalGroup(
             Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -577,17 +628,22 @@ public class MarketingFrame extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Manage_MarketingLayout.createSequentialGroup()
+                        .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(Manage_MarketingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(103, 103, 103)
                 .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addGap(114, 114, 114))
         );
 
         jTabbedPane1.addTab("Manage Marketing Account", Manage_Marketing);
@@ -1271,31 +1327,24 @@ public class MarketingFrame extends javax.swing.JFrame {
 
         //Check for valid user name or password:
 
-        if(userNameField.getText().isEmpty()||passwordField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Please enter a valid username or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        if( userNameField.getText().isEmpty() || passwordField.getText().isEmpty() || nameField.getText().isEmpty() ){
+            JOptionPane.showMessageDialog(this, "Please enter a valid data.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }else{
-
-            if(userNameField.getText().equals(currentUserName.getText())&&passwordField.getText().equals(currentPassword.getText()))
-            {
-                JOptionPane.showMessageDialog(this, "Please enter the new Username or Password you want update.", "Error", JOptionPane.INFORMATION_MESSAGE);
-            } else if(userNameField.getText().equals(currentUserName.getText())&& !passwordField.getText().equals(currentPassword.getText())){
-                //Data Base code will be here
+            
+            try {
+                user.setName(nameField.getText());
+                user.setPassword(passwordField.getText());
+                user.setUserName(userNameField.getText());
+            } catch(Exception error){
+                    System.out.println(error.getLocalizedMessage());
+             }
+            
                 currentPassword.setText(passwordField.getText());
-                JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-            } else if(passwordField.getText().equals(currentPassword.getText())&& !userNameField.getText().equals(currentUserName.getText())){
-                //Data Base code will be here
                 currentUserName.setText(userNameField.getText());
+                currentName.setText(nameField.getText() );
                 JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
 
-            }else {
-                //Data Base code will be here
-                currentPassword.setText(passwordField.getText());
 
-                //Data Base code will be here
-                currentUserName.setText(userNameField.getText());
-                JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-
-            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -1563,6 +1612,10 @@ public class MarketingFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_selectedTypeActionPerformed
 
+    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1628,6 +1681,7 @@ public class MarketingFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Side_Bar;
     private javax.swing.JPanel The_Main_Panel;
     private javax.swing.JPanel Update_Account;
+    private javax.swing.JLabel currentName;
     public javax.swing.JLabel currentPassword;
     private javax.swing.JTable currentProductsTableInGUI;
     private javax.swing.JTable currentProductsTableInOffers;
@@ -1662,6 +1716,7 @@ public class MarketingFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1679,6 +1734,9 @@ public class MarketingFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel marketingWelcome;
+    private javax.swing.JLabel name;
+    private javax.swing.JTextField nameField;
     private javax.swing.JTextField passwordField;
     private javax.swing.JTextField priceFrom;
     private javax.swing.JTextField priceTo;

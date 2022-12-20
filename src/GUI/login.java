@@ -304,21 +304,25 @@ public class login extends javax.swing.JFrame {
                       
                       Admin admin = new Admin(u);
                       admin.setVisible(true);
+                      admin.setLocationRelativeTo(null);
                       this.dispose();
                   }else if("inventory".equals(u.getType())){
                   
                       Inventory inv = new Inventory(u);
                       inv.setVisible(true);
+                      inv.setLocationRelativeTo(null);
                       this.dispose();
                   }else if("sales".equals(u.getType())){
                   
                       Sales sales = new Sales(u);
                       sales.setVisible(true);
+                      sales.setLocationRelativeTo(null);
                       this.dispose();
                   }else if("marketing".equals(u.getType())){
                   
                       MarketingFrame marketing = new MarketingFrame(u);
                       marketing.setVisible(true);
+                      marketing.setLocationRelativeTo(null);
                       this.dispose();
                   }
                  

@@ -17,8 +17,10 @@ import javax.swing.table.TableRowSorter;
  * @author shehab
  */
 public class Inventory extends javax.swing.JFrame {
+    
     public void updateTable(){
-         try{
+
+        try{
             ArrayList<Product> products = PDB.search("*");
           
             for(int i = 0 ; i < products.size();i++){
@@ -105,10 +107,22 @@ public class Inventory extends javax.swing.JFrame {
              tb1Model.removeRow(0);
           }
     }
+    User user;
     public Inventory(User u) {
+
         initComponents();
-         updateTable();
-       jLabel3.setText("welcome, "+u.getName());
+        updateTable();
+        
+        
+        user = u;
+        inventoryWelcome.setText("Welcome , "+user.getName() );
+        currentName.setText(user.getName());
+        currentUserName.setText(user.getUserName());
+        currentPassword.setText(user.getPassword());
+        
+        nameField.setText(user.getName());
+        userNameField.setText(user.getUserName());
+        passwordField.setText(user.getPassword());
     }
 
     /**
@@ -133,14 +147,16 @@ public class Inventory extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        inventoryWelcome = new javax.swing.JLabel();
         Manage_admin = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        currentPassword = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        currentUserName = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        currentPassword = new javax.swing.JLabel();
+        currentUserName = new javax.swing.JLabel();
+        currentName = new javax.swing.JLabel();
         Update_Account = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -148,6 +164,8 @@ public class Inventory extends javax.swing.JFrame {
         userNameField = new javax.swing.JTextField();
         passwordField = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        name = new javax.swing.JLabel();
+        nameField = new javax.swing.JTextField();
         Mnagae_employee = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -380,7 +398,7 @@ public class Inventory extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,11 +407,9 @@ public class Inventory extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/market/imgs/adminLogo.png"))); // NOI18N
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Welcome, adminName");
+        inventoryWelcome.setBackground(new java.awt.Color(0, 0, 0));
+        inventoryWelcome.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        inventoryWelcome.setForeground(new java.awt.Color(255, 115, 29));
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
         Home.setLayout(HomeLayout);
@@ -402,18 +418,19 @@ public class Inventory extends javax.swing.JFrame {
             .addGroup(HomeLayout.createSequentialGroup()
                 .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(236, 236, 236)
+                        .addGap(278, 278, 278)
+                        .addComponent(inventoryWelcome))
+                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addGap(229, 229, 229)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(HomeLayout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(273, 273, 273)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(297, Short.MAX_VALUE))
+                                .addGap(6, 6, 6)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                                .addGap(6, 6, 6))
+                            .addComponent(jLabel1))))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -426,8 +443,8 @@ public class Inventory extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
-                .addComponent(jLabel3)
-                .addContainerGap(417, Short.MAX_VALUE))
+                .addComponent(inventoryWelcome)
+                .addContainerGap(440, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);
@@ -437,22 +454,6 @@ public class Inventory extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(5, 58, 102));
         jLabel4.setText("Manage Admin Account");
-
-        currentPassword.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        currentPassword.setForeground(new java.awt.Color(5, 58, 102));
-        currentPassword.setText("admin");
-
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel8.setText("Current Password   :");
-
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel9.setText("Current User Name :");
-
-        currentUserName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        currentUserName.setForeground(new java.awt.Color(5, 58, 102));
-        currentUserName.setText("admin");
 
         jPanel8.setBackground(new java.awt.Color(255, 115, 29));
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 10));
@@ -467,6 +468,27 @@ public class Inventory extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
+
+        jLabel29.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel29.setText("Name :");
+
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel9.setText("Current User Name :");
+
+        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel8.setText("Current Password :");
+
+        currentPassword.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentPassword.setForeground(new java.awt.Color(5, 58, 102));
+
+        currentUserName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentUserName.setForeground(new java.awt.Color(5, 58, 102));
+
+        currentName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentName.setForeground(new java.awt.Color(5, 58, 102));
 
         Update_Account.setBackground(java.awt.Color.white);
         Update_Account.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -483,13 +505,18 @@ public class Inventory extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 115, 29));
         jLabel14.setText("Password: ");
 
-        userNameField.setText(currentUserName.getText());
+        userNameField.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        userNameField.setForeground(new java.awt.Color(5, 58, 102));
+        userNameField.setToolTipText("");
         userNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userNameFieldActionPerformed(evt);
             }
         });
 
+        passwordField.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        passwordField.setForeground(new java.awt.Color(5, 58, 102));
+        passwordField.setToolTipText("");
         passwordField.setText(currentPassword.getText());
         passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -517,44 +544,63 @@ public class Inventory extends javax.swing.JFrame {
             }
         });
 
+        name.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        name.setForeground(new java.awt.Color(255, 115, 29));
+        name.setText("Name: ");
+
+        nameField.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        nameField.setForeground(new java.awt.Color(5, 58, 102));
+        nameField.setToolTipText("");
+        nameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout Update_AccountLayout = new javax.swing.GroupLayout(Update_Account);
         Update_Account.setLayout(Update_AccountLayout);
         Update_AccountLayout.setHorizontalGroup(
             Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Update_AccountLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74))
             .addGroup(Update_AccountLayout.createSequentialGroup()
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Update_AccountLayout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addComponent(jLabel12))
                     .addGroup(Update_AccountLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(39, 39, 39)
                         .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addGap(60, 60, 60)
+                            .addComponent(jLabel14)
+                            .addComponent(name))
+                        .addGap(36, 36, 36)
                         .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(passwordField))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Update_AccountLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                            .addComponent(passwordField)
+                            .addComponent(userNameField)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         Update_AccountLayout.setVerticalGroup(
             Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Update_AccountLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel12)
-                .addGap(64, 64, 64)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
                 .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(43, 43, 43)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
@@ -570,17 +616,21 @@ public class Inventory extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(183, 183, 183))
             .addGroup(Manage_adminLayout.createSequentialGroup()
-                .addGap(185, 185, 185)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Update_Account, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(191, 191, 191)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Manage_adminLayout.createSequentialGroup()
-                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel8))
+                        .addGap(36, 36, 36)
                         .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Manage_adminLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Manage_adminLayout.setVerticalGroup(
@@ -590,17 +640,22 @@ public class Inventory extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Manage_adminLayout.createSequentialGroup()
+                        .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(103, 103, 103)
                 .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         jTabbedPane1.addTab("Manage Admin Account", Manage_admin);
@@ -1195,50 +1250,6 @@ public class Inventory extends javax.swing.JFrame {
        
         
     }//GEN-LAST:event_jButton2ActionPerformed
-   /*public void UpdateAccount(){
-        InventoryEmp user = new InventoryEmp();
-       currentPassword.setText(user.getPassword());
-       currentUserName.setText(user.getName());
-   }*/
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        
-        //Check for valid user name or password:
-        
-        if(userNameField.getText().isEmpty()||passwordField.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Please enter a valid username or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            
-            
-        if(userNameField.getText().equals(currentUserName.getText())&&passwordField.getText().equals(currentPassword.getText()))
-        {
-            JOptionPane.showMessageDialog(this, "Please enter the new Username or Password you want update.", "Error", JOptionPane.INFORMATION_MESSAGE);
-        } else if(userNameField.getText().equals(currentUserName.getText())&& !passwordField.getText().equals(currentPassword.getText())){
-            //Data Base code will be here
-            currentPassword.setText(passwordField.getText());
-            JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-        } else if(passwordField.getText().equals(currentPassword.getText())&& !userNameField.getText().equals(currentUserName.getText())){
-            //Data Base code will be here
-            currentUserName.setText(userNameField.getText());
-            JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-
-        }else {
-            //Data Base code will be here
-            currentPassword.setText(passwordField.getText());
-            
-            //Data Base code will be here
-            currentUserName.setText(userNameField.getText());
-            JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-
-        }
-        }
-        
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -1306,21 +1317,6 @@ public class Inventory extends javax.swing.JFrame {
         jButton4.setBackground(new Color(255,115,29));
     }//GEN-LAST:event_jButton4MouseExited
 
-    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
-        // TODO add your handling code here:
-        jButton3.setBackground(new Color(255,115,29));
-    }//GEN-LAST:event_jButton3MouseExited
-
-    private void jButton3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseMoved
-        // TODO add your handling code here:
-        jButton3.setBackground(new Color(250, 171, 120));
-    }//GEN-LAST:event_jButton3MouseMoved
-
-    private void userNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameFieldActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_userNameFieldActionPerformed
-
     private void jButton5MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseMoved
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5MouseMoved
@@ -1331,12 +1327,11 @@ public class Inventory extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        login loginFrame = new login();
+        loginFrame.setVisible(true);
+        loginFrame.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void deleteProductMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteProductMouseMoved
         // TODO add your handling code here:
@@ -1488,7 +1483,6 @@ public class Inventory extends javax.swing.JFrame {
 
             }
         }
-        
     }//GEN-LAST:event_updateProductBtnActionPerformed
 
     private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased
@@ -1552,6 +1546,54 @@ public class Inventory extends javax.swing.JFrame {
         }
        
     }//GEN-LAST:event_dateAddFieldFocusLost
+
+    private void userNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameFieldActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void jButton3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseMoved
+        // TODO add your handling code here:
+        jButton3.setBackground(new Color(250, 171, 120));
+    }//GEN-LAST:event_jButton3MouseMoved
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+        // TODO add your handling code here:
+        jButton3.setBackground(new Color(255,115,29));
+    }//GEN-LAST:event_jButton3MouseExited
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+        //Check for valid user name or password:
+
+        if( userNameField.getText().isEmpty() || passwordField.getText().isEmpty() || nameField.getText().isEmpty() ){
+            JOptionPane.showMessageDialog(this, "Please enter a valid data.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            
+            try {
+                user.setName(nameField.getText());
+                user.setPassword(passwordField.getText());
+                user.setUserName(userNameField.getText());
+            } catch(Exception error){
+                    System.out.println(error.getLocalizedMessage());
+             }
+            
+                currentPassword.setText(passwordField.getText());
+                currentUserName.setText(userNameField.getText());
+                currentName.setText(nameField.getText() );
+                JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
+
+
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameFieldActionPerformed
       public void filter ( String query){
         DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
 
@@ -1608,6 +1650,7 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JPanel Update_Account;
     private javax.swing.JButton addProductBtn;
     private javax.swing.JTable amountTable;
+    private javax.swing.JLabel currentName;
     public javax.swing.JLabel currentPassword;
     private javax.swing.JLabel currentUserName;
     private javax.swing.JTextField dateAddField;
@@ -1615,6 +1658,7 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JButton deleteProduct;
     private javax.swing.JTable expireTable;
     private javax.swing.JTextField idUpdateField;
+    private javax.swing.JLabel inventoryWelcome;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1638,7 +1682,7 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1655,7 +1699,9 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel name;
     private javax.swing.JTextField nameAddField;
+    private javax.swing.JTextField nameField;
     private javax.swing.JTextField nameUpdateField;
     private javax.swing.JButton notifications;
     private javax.swing.JTextField passwordField;
