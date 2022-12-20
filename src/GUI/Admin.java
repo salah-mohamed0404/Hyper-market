@@ -4,11 +4,18 @@
  */
 package GUI;
 
+import User.InventoryEmp;
+import User.MarketingEmp;
+import User.SalesEmp;
 import java.awt.Color;
 import javax.swing.*;
 import java.util.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import Database.*;
+import static Database.UDB.isUserIdUnique;
+import static Database.UDB.isUserNameUnique;
+import User.User;
 /**
  *
  * @author shehab
@@ -20,6 +27,42 @@ public class Admin extends javax.swing.JFrame {
      */
     public Admin() {
         initComponents();
+        
+        //Add employee to table
+            try{
+            ArrayList<User> users = UDB.search("*");
+            DefaultTableModel Etb = (DefaultTableModel) employeeTable.getModel();
+                for(int i =1;i<users.size();i++){
+                    String user[]={
+                        String.valueOf(users.get(i).getId()) ,
+                        users.get(i).getName() ,
+                        users.get(i).getUserName() ,
+                        users.get(i).getPassword() ,
+                        users.get(i).getType()
+                    };
+                    Etb.addRow(user);
+                }
+
+            }catch(Exception error){
+                    System.out.println(error.getLocalizedMessage());
+            }
+            
+        //Set Admin data in Manage admin account page and set Welcome page
+        try{
+        ArrayList<User> adminAccount = UDB.search("id = 1");
+        welcomeLabel.setText("Welcome, "+adminAccount.get(0).getName());
+        currentAdminName.setText(adminAccount.get(0).getName());
+        currentAdminPass.setText(adminAccount.get(0).getPassword());
+        currentAdminUserName.setText(adminAccount.get(0).getUserName());
+        updateNameTextBox.setText(currentAdminName.getText());
+        updatePassTextBox.setText(currentAdminPass.getText());
+        updateUserNameTextBox.setText(currentAdminUserName.getText());
+            
+        }catch(Exception error){
+                    System.out.println(error.getLocalizedMessage());
+        }
+        
+        
     }
 
     /**
@@ -42,29 +85,33 @@ public class Admin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        welcomeLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         Manage_admin = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        currentPassword = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        currentUserName = new javax.swing.JLabel();
+        currentAdminPass = new javax.swing.JLabel();
+        currentAdminPassLabel = new javax.swing.JLabel();
+        currentAdminUserNameLabel = new javax.swing.JLabel();
+        currentAdminName = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         Update_Account = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        userNameField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
+        updateUserNameTextBox = new javax.swing.JTextField();
+        updatePassTextBox = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
+        updateNameTextBox = new javax.swing.JTextField();
+        currentAdminNameLabel = new javax.swing.JLabel();
+        currentAdminUserName = new javax.swing.JLabel();
         Mnagae_employee = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         deleteSelectedEmployee = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        employeeTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
@@ -76,6 +123,8 @@ public class Admin extends javax.swing.JFrame {
         Ename = new javax.swing.JTextField();
         Add_Employee = new javax.swing.JButton();
         addType = new javax.swing.JComboBox<>();
+        jLabel25 = new javax.swing.JLabel();
+        userNameTextBox = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         Eid = new javax.swing.JTextField();
@@ -87,10 +136,13 @@ public class Admin extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         Update_employee = new javax.swing.JButton();
         updateComboBox = new javax.swing.JComboBox<>();
+        userNameTextBoxUpdate = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Admin");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -265,10 +317,10 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/market/imgs/adminLogo.png"))); // NOI18N
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel3.setText("Welcome, adminName");
+        welcomeLabel.setBackground(new java.awt.Color(0, 0, 0));
+        welcomeLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        welcomeLabel.setForeground(new java.awt.Color(255, 115, 29));
+        welcomeLabel.setText(" ");
 
         jLabel6.setPreferredSize(new java.awt.Dimension(250, 250));
 
@@ -282,32 +334,33 @@ public class Admin extends javax.swing.JFrame {
                         .addGap(150, 150, 150)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(285, 285, 285)
+                        .addGap(313, 313, 313)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(HomeLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel3))))
-                .addContainerGap(311, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
+                .addGap(0, 497, Short.MAX_VALUE)
+                .addComponent(welcomeLabel)
+                .addGap(335, 335, 335))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomeLayout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(73, 73, 73)
-                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(65, 65, 65)
+                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(HomeLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(53, 53, 53)
-                .addComponent(jLabel3)
-                .addContainerGap(485, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addComponent(welcomeLabel)
+                .addContainerGap(491, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);
@@ -318,21 +371,19 @@ public class Admin extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(5, 58, 102));
         jLabel4.setText("Manage Admin Account");
 
-        currentPassword.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        currentPassword.setForeground(new java.awt.Color(5, 58, 102));
-        currentPassword.setText("admin");
+        currentAdminPass.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentAdminPass.setForeground(new java.awt.Color(5, 58, 102));
 
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel8.setText("Current Password   :");
+        currentAdminPassLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        currentAdminPassLabel.setForeground(new java.awt.Color(255, 115, 29));
+        currentAdminPassLabel.setText("Current Password   :");
 
-        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel9.setText("Current User Name :");
+        currentAdminUserNameLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        currentAdminUserNameLabel.setForeground(new java.awt.Color(255, 115, 29));
+        currentAdminUserNameLabel.setText("Current User Name :");
 
-        currentUserName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
-        currentUserName.setForeground(new java.awt.Color(5, 58, 102));
-        currentUserName.setText("admin");
+        currentAdminName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentAdminName.setForeground(new java.awt.Color(5, 58, 102));
 
         jPanel8.setBackground(new java.awt.Color(255, 115, 29));
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 10));
@@ -350,32 +401,40 @@ public class Admin extends javax.swing.JFrame {
 
         Update_Account.setBackground(java.awt.Color.white);
         Update_Account.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Update_Account.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Century Gothic", 1, 22)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(5, 58, 102));
         jLabel12.setText("Update Account");
+        Update_Account.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 21, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 115, 29));
         jLabel13.setText("User Name: ");
+        Update_Account.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, 32));
 
         jLabel14.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 115, 29));
         jLabel14.setText("Password: ");
+        Update_Account.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, 32));
 
-        userNameField.setText(currentUserName.getText());
-        userNameField.addActionListener(new java.awt.event.ActionListener() {
+        updateUserNameTextBox.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        updateUserNameTextBox.setForeground(new java.awt.Color(5, 58, 102));
+        updateUserNameTextBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameFieldActionPerformed(evt);
+                updateUserNameTextBoxActionPerformed(evt);
             }
         });
+        Update_Account.add(updateUserNameTextBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 95, 34));
 
-        passwordField.setText(currentPassword.getText());
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
+        updatePassTextBox.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        updatePassTextBox.setForeground(new java.awt.Color(5, 58, 102));
+        updatePassTextBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
+                updatePassTextBoxActionPerformed(evt);
             }
         });
+        Update_Account.add(updatePassTextBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, 95, 35));
 
         jButton3.setBackground(new java.awt.Color(255, 115, 29));
         jButton3.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
@@ -396,72 +455,57 @@ public class Admin extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        Update_Account.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 186, 35));
 
-        javax.swing.GroupLayout Update_AccountLayout = new javax.swing.GroupLayout(Update_Account);
-        Update_Account.setLayout(Update_AccountLayout);
-        Update_AccountLayout.setHorizontalGroup(
-            Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Update_AccountLayout.createSequentialGroup()
-                .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Update_AccountLayout.createSequentialGroup()
-                        .addGap(84, 84, 84)
-                        .addComponent(jLabel12))
-                    .addGroup(Update_AccountLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addGap(60, 60, 60)
-                        .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(passwordField))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Update_AccountLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
-        );
-        Update_AccountLayout.setVerticalGroup(
-            Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Update_AccountLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel12)
-                .addGap(64, 64, 64)
-                .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(Update_AccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
-        );
+        jLabel27.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel27.setText("Name:");
+        Update_Account.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, -1, 32));
+
+        updateNameTextBox.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        updateNameTextBox.setForeground(new java.awt.Color(5, 58, 102));
+        updateNameTextBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateNameTextBoxActionPerformed(evt);
+            }
+        });
+        Update_Account.add(updateNameTextBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 95, 34));
+
+        currentAdminNameLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        currentAdminNameLabel.setForeground(new java.awt.Color(255, 115, 29));
+        currentAdminNameLabel.setText("Current Name :");
+
+        currentAdminUserName.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
+        currentAdminUserName.setForeground(new java.awt.Color(5, 58, 102));
 
         javax.swing.GroupLayout Manage_adminLayout = new javax.swing.GroupLayout(Manage_admin);
         Manage_admin.setLayout(Manage_adminLayout);
         Manage_adminLayout.setHorizontalGroup(
             Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Manage_adminLayout.createSequentialGroup()
-                .addContainerGap(158, Short.MAX_VALUE)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(183, 183, 183))
             .addGroup(Manage_adminLayout.createSequentialGroup()
-                .addGap(185, 185, 185)
                 .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Update_Account, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(Manage_adminLayout.createSequentialGroup()
-                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(185, 185, 185)
+                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(currentAdminUserNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(currentAdminPassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(currentAdminNameLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(currentAdminPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(currentAdminUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(currentAdminName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Manage_adminLayout.createSequentialGroup()
+                        .addGap(248, 248, 248)
+                        .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Manage_adminLayout.createSequentialGroup()
+                .addContainerGap(188, Short.MAX_VALUE)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(183, 183, 183))
         );
         Manage_adminLayout.setVerticalGroup(
             Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,17 +514,21 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
-                .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addGap(65, 65, 65)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(currentAdminName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(currentAdminNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(currentAdminUserNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(currentAdminUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(currentAdminPassLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(currentAdminPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
+                .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(110, 110, 110))
         );
 
         jTabbedPane1.addTab("Manage Admin Account", Manage_admin);
@@ -519,38 +567,38 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Century Gothic", 0, 15)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        employeeTable.setFont(new java.awt.Font("Century Gothic", 0, 15)); // NOI18N
+        employeeTable.setForeground(new java.awt.Color(5, 58, 102));
+        employeeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Name", "Password", "Type"
+                "Id", "Name", "User name", "Password", "Type"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setAutoscrolls(false);
-        jTable1.setGridColor(new java.awt.Color(255, 241, 226));
-        jTable1.setRequestFocusEnabled(false);
-        jTable1.setSelectionBackground(new java.awt.Color(255, 241, 226));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        employeeTable.setAutoscrolls(false);
+        employeeTable.setGridColor(java.awt.Color.black);
+        employeeTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                employeeTableMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane2.setViewportView(employeeTable);
+        if (employeeTable.getColumnModel().getColumnCount() > 0) {
+            employeeTable.getColumnModel().getColumn(0).setResizable(false);
+            employeeTable.getColumnModel().getColumn(1).setResizable(false);
+            employeeTable.getColumnModel().getColumn(2).setResizable(false);
+            employeeTable.getColumnModel().getColumn(3).setResizable(false);
+            employeeTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         jPanel1.setBackground(java.awt.Color.white);
@@ -576,11 +624,19 @@ public class Admin extends javax.swing.JFrame {
         jLabel20.setForeground(new java.awt.Color(255, 115, 29));
         jLabel20.setText("Type:");
 
+        EId.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        EId.setForeground(new java.awt.Color(5, 58, 102));
         EId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EIdActionPerformed(evt);
             }
         });
+
+        Epass.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        Epass.setForeground(new java.awt.Color(5, 58, 102));
+
+        Ename.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        Ename.setForeground(new java.awt.Color(5, 58, 102));
 
         Add_Employee.setBackground(new java.awt.Color(255, 115, 29));
         Add_Employee.setFont(new java.awt.Font("Century Gothic", 1, 15)); // NOI18N
@@ -592,7 +648,21 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
+        addType.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        addType.setForeground(new java.awt.Color(5, 58, 102));
         addType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sales", "inventory", "marketing" }));
+
+        jLabel25.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel25.setText("User name");
+
+        userNameTextBox.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        userNameTextBox.setForeground(new java.awt.Color(5, 58, 102));
+        userNameTextBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userNameTextBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -619,13 +689,14 @@ public class Admin extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel18)
                                         .addComponent(jLabel20))
+                                    .addGap(56, 56, 56)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(63, 63, 63)
-                                            .addComponent(addType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(66, 66, 66)
-                                            .addComponent(Epass)))))))
+                                        .addComponent(Epass)
+                                        .addComponent(addType, 0, 95, Short.MAX_VALUE)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel25)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(userNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(Add_Employee, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -636,27 +707,29 @@ public class Admin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel15)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EId, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EId, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Ename, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNameTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Epass, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Ename, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Epass, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addType, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addType, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(Add_Employee, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
         );
 
         jPanel2.setBackground(java.awt.Color.white);
@@ -667,6 +740,8 @@ public class Admin extends javax.swing.JFrame {
         jLabel16.setText("Update Employee");
 
         Eid.setEditable(false);
+        Eid.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        Eid.setForeground(new java.awt.Color(5, 58, 102));
         Eid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EidActionPerformed(evt);
@@ -680,6 +755,12 @@ public class Admin extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 115, 29));
         jLabel22.setText("Name:");
+
+        EnameU.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        EnameU.setForeground(new java.awt.Color(5, 58, 102));
+
+        EpassU.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        EpassU.setForeground(new java.awt.Color(5, 58, 102));
 
         jLabel23.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 115, 29));
@@ -699,85 +780,100 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
+        updateComboBox.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        updateComboBox.setForeground(new java.awt.Color(5, 58, 102));
         updateComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "sales", "inventory", "marketing" }));
+
+        userNameTextBoxUpdate.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        userNameTextBoxUpdate.setForeground(new java.awt.Color(5, 58, 102));
+
+        jLabel26.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel26.setText("User name:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel16)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(EpassU, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel26))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(EnameU, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(userNameTextBoxUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel21)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Eid, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(Update_employee, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54))
+                        .addComponent(jLabel16)
+                        .addGap(61, 61, 61))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(updateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(26, 26, 26)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel21)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Eid, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel22)
-                                .addComponent(jLabel23)
-                                .addComponent(jLabel24))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(EpassU, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-                                .addComponent(EnameU, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE))))
-                    .addGap(26, 26, 26)))
+                        .addComponent(Update_employee, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jLabel16)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Eid, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EnameU, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userNameTextBoxUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EpassU, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(updateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(updateComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
                 .addComponent(Update_employee, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(78, 78, 78)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Eid, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(EnameU, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(EpassU, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(2, 2, 2))
-                        .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(89, Short.MAX_VALUE)))
+                .addGap(17, 17, 17))
         );
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 115, 29));
         jLabel7.setText("Search: ");
 
+        jTextField1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        jTextField1.setForeground(new java.awt.Color(5, 58, 102));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField1KeyReleased(evt);
             }
@@ -788,32 +884,32 @@ public class Admin extends javax.swing.JFrame {
         Mnagae_employeeLayout.setHorizontalGroup(
             Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                        .addGap(285, 285, 285)
-                        .addComponent(deleteSelectedEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(109, 109, 109)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                        .addGap(277, 277, 277)
-                        .addComponent(jLabel5))
-                    .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Mnagae_employeeLayout.createSequentialGroup()
-                        .addGap(183, 183, 183)
-                        .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(73, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(109, 109, 109)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(Mnagae_employeeLayout.createSequentialGroup()
+                            .addGap(321, 321, 321)
+                            .addComponent(deleteSelectedEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(Mnagae_employeeLayout.createSequentialGroup()
+                            .addGap(213, 213, 213)
+                            .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(Mnagae_employeeLayout.createSequentialGroup()
+                            .addGap(86, 86, 86)
+                            .addComponent(jLabel7)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(Mnagae_employeeLayout.createSequentialGroup()
+                            .addGap(283, 283, 283)
+                            .addComponent(jLabel5))
+                        .addGroup(Mnagae_employeeLayout.createSequentialGroup()
+                            .addGap(68, 68, 68)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
         Mnagae_employeeLayout.setVerticalGroup(
             Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -830,10 +926,10 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addGap(18, 18, 18)
                 .addComponent(deleteSelectedEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(12, 12, 12)
+                .addGroup(Mnagae_employeeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(33, 33, 33))
@@ -841,7 +937,7 @@ public class Admin extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Manage Employees", Mnagae_employee);
 
-        The_Main_Panel.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(201, -40, 810, 920));
+        The_Main_Panel.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(171, -40, 840, 920));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -881,36 +977,37 @@ public class Admin extends javax.swing.JFrame {
         
         //Check for valid user name or password:
         
-        if(userNameField.getText().isEmpty()||passwordField.getText().isEmpty()){
+        if(updateUserNameTextBox.getText().isEmpty()||updatePassTextBox.getText().isEmpty()||updateNameTextBox.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "Please enter a valid username or password.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }else{
             
             
-        if(userNameField.getText().equals(currentUserName.getText())&&passwordField.getText().equals(currentPassword.getText()))
+        if(updateUserNameTextBox.getText().equals(currentAdminName.getText())&&updatePassTextBox.getText().equals(currentAdminPass.getText()) &&updateNameTextBox.getText().equals(currentAdminName.getText()))
         {
-            JOptionPane.showMessageDialog(this, "Please enter the new Username or Password you want update.", "Error", JOptionPane.INFORMATION_MESSAGE);
-        } else if(userNameField.getText().equals(currentUserName.getText())&& !passwordField.getText().equals(currentPassword.getText())){
-            //Data Base code will be here
-            currentPassword.setText(passwordField.getText());
-            JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-        } else if(passwordField.getText().equals(currentPassword.getText())&& !userNameField.getText().equals(currentUserName.getText())){
-            //Data Base code will be here
-            currentUserName.setText(userNameField.getText());
-            JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
-
+            JOptionPane.showMessageDialog(this, "Please enter the data you want to update.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }else {
-            //Data Base code will be here
-            currentPassword.setText(passwordField.getText());
             
             //Data Base code will be here
-            currentUserName.setText(userNameField.getText());
+            try{
+                ArrayList<User> adminAccount = UDB.search("id = 1");
+                adminAccount.get(0).setName(updateNameTextBox.getText());
+                adminAccount.get(0).setPassword(updatePassTextBox.getText());
+                adminAccount.get(0).setUserName((String)updateUserNameTextBox.getText());
+            }catch(Exception error){
+                    System.out.println(error.getLocalizedMessage());
+             }
+            
+            currentAdminPass.setText(updatePassTextBox.getText());
+            currentAdminName.setText(updateNameTextBox.getText());
+            currentAdminUserName.setText(updateUserNameTextBox.getText());
+            
             JOptionPane.showMessageDialog(this, "Update done successfuly.", "Done", JOptionPane.DEFAULT_OPTION);
 
         }
         }
         
         
-        
+
         
         
         
@@ -918,6 +1015,10 @@ public class Admin extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        
+
+        
+        
         jTabbedPane1.setSelectedIndex(2);
 
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -995,14 +1096,22 @@ public class Admin extends javax.swing.JFrame {
     private void deleteSelectedEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSelectedEmployeeActionPerformed
         // TODO add your handling code here:
         
-        DefaultTableModel tbl1 = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel tbl1 = (DefaultTableModel) employeeTable.getModel();
         
-        if(jTable1.getSelectedRowCount()==1){
-            tbl1.removeRow(jTable1.getSelectedRow());
-            JOptionPane.showMessageDialog(this, "Employee deleted succussfuly.","Done",JOptionPane.DEFAULT_OPTION);
+        if(employeeTable.getSelectedRowCount()==1){
+            try{
+                DefaultTableModel Etb = (DefaultTableModel) employeeTable.getModel();
+                int userId= Integer.parseInt(Etb.getValueAt(employeeTable.getSelectedRow(), 0).toString());
+                UDB.delete("id= "+userId);
+                tbl1.removeRow(employeeTable.getSelectedRow());
+                JOptionPane.showMessageDialog(this, "Employee deleted succussfuly.","Done",JOptionPane.DEFAULT_OPTION);
+
+            }catch(Exception error){
+                System.out.println(error.getLocalizedMessage());
+            }
         }else{
             
-            if(jTable1.getRowCount()==0){
+            if(employeeTable.getRowCount()==0){
                 JOptionPane.showMessageDialog(this, "There are no employees to delete.!", "Error", JOptionPane.INFORMATION_MESSAGE);
             }else{
                 JOptionPane.showMessageDialog(this, "Please select employee to delete.!", "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -1014,13 +1123,14 @@ public class Admin extends javax.swing.JFrame {
         Eid.setText("");
         EnameU.setText("");
         EpassU.setText("");
+        userNameTextBoxUpdate.setText("");
         
     }//GEN-LAST:event_deleteSelectedEmployeeActionPerformed
 
-    private void userNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameFieldActionPerformed
+    private void updateUserNameTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserNameTextBoxActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_userNameFieldActionPerformed
+    }//GEN-LAST:event_updateUserNameTextBoxActionPerformed
 
     private void jButton5MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseMoved
         // TODO add your handling code here:
@@ -1032,12 +1142,15 @@ public class Admin extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        login loginFrame = new login();
+        loginFrame.setVisible(true);
+        loginFrame.setLocationRelativeTo(null);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+    private void updatePassTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePassTextBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
+    }//GEN-LAST:event_updatePassTextBoxActionPerformed
 
     private void EIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EIdActionPerformed
         // TODO add your handling code here:
@@ -1050,7 +1163,9 @@ public class Admin extends javax.swing.JFrame {
     private void Add_EmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Add_EmployeeActionPerformed
         // TODO add your handling code here:
         String employeeId=EId.getText();
+        int employeeIdInInt=Integer.parseInt(EId.getText());
         String employeeName=Ename.getText();
+        String employeeUserName=userNameTextBox.getText();
         String employeePassword=Epass.getText();
         String employeeType=(String) addType.getSelectedItem();
         
@@ -1059,43 +1174,73 @@ public class Admin extends javax.swing.JFrame {
         
         if(employeeName.isEmpty() || employeePassword.isEmpty() || employeeType.isEmpty() || employeeId.isEmpty())
             JOptionPane.showMessageDialog(this, "This fields cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            
-        else if(!employeeType.equalsIgnoreCase("sales") && !employeeType.equalsIgnoreCase("marketing") && !employeeType.equalsIgnoreCase("inventory")) 
-            JOptionPane.showMessageDialog(this, "Enter a valid employee type", "Error", JOptionPane.ERROR_MESSAGE);
+
         
         else{
-            //Data Base code will be here
-            DefaultTableModel Etb = (DefaultTableModel) jTable1.getModel();
-            String data[]={employeeId,employeeName,employeePassword,(String) addType.getSelectedItem()};
-            Etb.addRow(data);
-            JOptionPane.showMessageDialog(this, "Employee Added Successfuly", "Done", JOptionPane.DEFAULT_OPTION);
+            // Add employee to data base
+            try{
+                if(isUserNameUnique(employeeUserName) && isUserIdUnique(employeeIdInInt)){ //Check for unique id and username
+                    if(employeeType.equals("sales")){
+                        SalesEmp newSalesEmp = new SalesEmp(employeeIdInInt,employeeName,employeeUserName,employeePassword,employeeType);
+                    }else if(employeeType.equals("inventory")){
+                        InventoryEmp newInventoryEmp = new InventoryEmp(employeeIdInInt,employeeName,employeeUserName,employeePassword,employeeType);
+                    }else if(employeeType.equals("marketing")){
+                        MarketingEmp newMarketingEmp = new MarketingEmp(employeeIdInInt,employeeName,employeeUserName,employeePassword,employeeType);
+                    }
+                DefaultTableModel Etb = (DefaultTableModel) employeeTable.getModel();
+                String data[]={employeeId,employeeName,employeeUserName,employeePassword,(String) addType.getSelectedItem()};
+                Etb.addRow(data);
+                JOptionPane.showMessageDialog(this, "Employee Added Successfuly", "Done", JOptionPane.DEFAULT_OPTION);
+                EId.setText("");
+                Ename.setText("");
+                Epass.setText("");
+                userNameTextBox.setText("");
+                }else{
+                    JOptionPane.showMessageDialog(this, "Please enter a unique username and password", "Error", JOptionPane.ERROR_MESSAGE);
 
-            EId.setText("");
-            Ename.setText("");
-            Epass.setText("");
+                }
+
+            }catch(Exception error){
+                System.out.println(error.getLocalizedMessage());
+            }
+
+
         }
     }//GEN-LAST:event_Add_EmployeeActionPerformed
 
     private void Update_employeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_employeeActionPerformed
         // TODO add your handling code here:
+        int employeeId=Integer.parseInt(Eid.getText());
         String employeeName=EnameU.getText();
+        String employeeUserName=userNameTextBoxUpdate.getText();
         String employeePassword=EpassU.getText();
         String employeeType=(String) updateComboBox.getSelectedItem();
-        DefaultTableModel Etb = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel Etb = (DefaultTableModel) employeeTable.getModel();
         
         //Check for the fields
         if(employeeName.isEmpty()||employeePassword.isEmpty()||employeeType.isEmpty())
             JOptionPane.showMessageDialog(this, "This fields cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-    
-        
         else{
             
-            if(jTable1.getSelectedRowCount()==1){
+            if(employeeTable.getSelectedRowCount()==1){
                 //Data base code will be here
-                Etb.setValueAt(employeeName,jTable1.getSelectedRow(), 1);
-                Etb.setValueAt(employeePassword,jTable1.getSelectedRow(), 2);
-                Etb.setValueAt(employeeType,jTable1.getSelectedRow(), 3);
-                JOptionPane.showMessageDialog(this, "Employee Updated Successfuly", "Done", JOptionPane.DEFAULT_OPTION);
+                try{
+                  
+                        User employee = UDB.search("id = " + employeeId).get(0);
+                        employee.setName(employeeName);
+                        employee.setUserName(employeeUserName);
+                        employee.setPassword(employeePassword);
+                        employee.setType(employeeType);
+
+                    Etb.setValueAt(employeeName,employeeTable.getSelectedRow(), 1);
+                    Etb.setValueAt(employeeUserName, employeeTable.getSelectedRow(), 2);
+                    Etb.setValueAt(employeePassword,employeeTable.getSelectedRow(), 3);
+                    Etb.setValueAt(employeeType,employeeTable.getSelectedRow(), 4);
+                    JOptionPane.showMessageDialog(this, "Employee Updated Successfuly", "Done", JOptionPane.DEFAULT_OPTION);
+
+                }catch(Exception  error){
+                    System.out.println(error.getLocalizedMessage());
+                }
 
             }else{
                 JOptionPane.showMessageDialog(this, "Select one row ro update", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1105,38 +1250,53 @@ public class Admin extends javax.swing.JFrame {
         
     }//GEN-LAST:event_Update_employeeActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    private void employeeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeTableMouseClicked
         // TODO add your handling code here:
         
-        DefaultTableModel Etb = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel Etb = (DefaultTableModel) employeeTable.getModel();
         
-        String id= Etb.getValueAt(jTable1.getSelectedRow(), 0).toString();
-        String name= Etb.getValueAt(jTable1.getSelectedRow(), 1).toString();
-        String password= Etb.getValueAt(jTable1.getSelectedRow(), 2).toString();
-        String type= Etb.getValueAt(jTable1.getSelectedRow(), 3).toString();
-
+        String id= Etb.getValueAt(employeeTable.getSelectedRow(), 0).toString();
+        String name= Etb.getValueAt(employeeTable.getSelectedRow(), 1).toString();
+        String userName=Etb.getValueAt(employeeTable.getSelectedRow(), 2).toString();
+        String password= Etb.getValueAt(employeeTable.getSelectedRow(), 3).toString();
+        String type= Etb.getValueAt(employeeTable.getSelectedRow(), 4).toString();
+        
         Eid.setText(id);
         EnameU.setText(name);
+        userNameTextBoxUpdate.setText(userName);
         EpassU.setText(password);
         updateComboBox.setSelectedItem(type);
 
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_employeeTableMouseClicked
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
-        
-        DefaultTableModel table= (DefaultTableModel) jTable1.getModel();
-        String search=jTextField1.getText().toLowerCase();
-        String search2=jTextField1.getText().toUpperCase();
+        //Search in table
+        DefaultTableModel table= (DefaultTableModel) employeeTable.getModel();
         TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(table);
-        jTable1.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(search));
-        tr.setRowFilter(RowFilter.regexFilter(search2));
+        employeeTable.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(jTextField1.getText().trim().toLowerCase()));
+       
+
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void userNameTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameTextBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userNameTextBoxActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void updateNameTextBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateNameTextBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateNameTextBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1189,9 +1349,14 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JPanel Update_Account;
     private javax.swing.JButton Update_employee;
     private javax.swing.JComboBox<String> addType;
-    public javax.swing.JLabel currentPassword;
-    private javax.swing.JLabel currentUserName;
+    private javax.swing.JLabel currentAdminName;
+    private javax.swing.JLabel currentAdminNameLabel;
+    public javax.swing.JLabel currentAdminPass;
+    private javax.swing.JLabel currentAdminPassLabel;
+    private javax.swing.JLabel currentAdminUserName;
+    private javax.swing.JLabel currentAdminUserNameLabel;
     private javax.swing.JButton deleteSelectedEmployee;
+    private javax.swing.JTable employeeTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1213,13 +1378,13 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -1227,10 +1392,13 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField passwordField;
     private javax.swing.JComboBox<String> updateComboBox;
-    private javax.swing.JTextField userNameField;
+    private javax.swing.JTextField updateNameTextBox;
+    private javax.swing.JTextField updatePassTextBox;
+    private javax.swing.JTextField updateUserNameTextBox;
+    private javax.swing.JTextField userNameTextBox;
+    private javax.swing.JTextField userNameTextBoxUpdate;
+    private javax.swing.JLabel welcomeLabel;
     // End of variables declaration//GEN-END:variables
 }
