@@ -8,6 +8,7 @@ import Product.*;
 import User.User;
 import java.sql.Date;
 import java.awt.Color;
+import java.awt.Image;
 import javax.swing.*;
 import java.util.*;
 import javax.swing.table.DefaultTableModel;
@@ -111,6 +112,8 @@ public class Inventory extends javax.swing.JFrame {
     public Inventory(User u) {
 
         initComponents();
+        Image img = new ImageIcon(this.getClass().getResource("/market/imgs/lock v2.png")).getImage();
+                this.setIconImage(img);
         updateTable();
         
         
@@ -209,6 +212,7 @@ public class Inventory extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("INVENTORY");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -398,7 +402,7 @@ public class Inventory extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 194, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,27 +414,25 @@ public class Inventory extends javax.swing.JFrame {
         inventoryWelcome.setBackground(new java.awt.Color(0, 0, 0));
         inventoryWelcome.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         inventoryWelcome.setForeground(new java.awt.Color(255, 115, 29));
+        inventoryWelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
         Home.setLayout(HomeLayout);
         HomeLayout.setHorizontalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomeLayout.createSequentialGroup()
-                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(229, 229, 229)
+                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(inventoryWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(278, 278, 278)
-                        .addComponent(inventoryWelcome))
-                    .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(229, 229, 229)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(HomeLayout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                                .addGap(6, 6, 6))
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
                             .addComponent(jLabel1))))
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(308, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,8 +444,8 @@ public class Inventory extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addComponent(inventoryWelcome)
+                .addGap(18, 18, 18)
+                .addComponent(inventoryWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(440, Short.MAX_VALUE))
         );
 
@@ -453,7 +455,7 @@ public class Inventory extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(5, 58, 102));
-        jLabel4.setText("Manage Admin Account");
+        jLabel4.setText("Manage Inventory Account");
 
         jPanel8.setBackground(new java.awt.Color(255, 115, 29));
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 10));
@@ -611,26 +613,29 @@ public class Inventory extends javax.swing.JFrame {
             Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Manage_adminLayout.createSequentialGroup()
                 .addContainerGap(148, Short.MAX_VALUE)
-                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(183, 183, 183))
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(199, 199, 199))
             .addGroup(Manage_adminLayout.createSequentialGroup()
-                .addGap(191, 191, 191)
                 .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Manage_adminLayout.createSequentialGroup()
-                        .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel8))
-                        .addGap(36, 36, 36)
+                        .addGap(191, 191, 191)
                         .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(Manage_adminLayout.createSequentialGroup()
+                                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel8))
+                                .addGap(36, 36, 36)
+                                .addGroup(Manage_adminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(currentName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(currentUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(currentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(Manage_adminLayout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(Manage_adminLayout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(Update_Account, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(133, 133, 133)
+                        .addComponent(jLabel4)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Manage_adminLayout.setVerticalGroup(

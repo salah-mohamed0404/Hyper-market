@@ -7,7 +7,10 @@ package GUI;
 import Database.UDB;
 import User.*;
 import java.awt.Color;
+import java.awt.Image;
 import java.util.Arrays;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +24,8 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
         
-            
+            Image img = new ImageIcon(this.getClass().getResource("/market/imgs/lock v2.png")).getImage();
+                this.setIconImage(img);
        
     }
  
@@ -328,7 +332,8 @@ public class login extends javax.swing.JFrame {
                  
                    
            }else{
-                 System.out.println("no");
+                 JOptionPane.showMessageDialog(null, "Wrong Username or Password",
+      "Hey!", JOptionPane.ERROR_MESSAGE);
            }
         } catch(Exception  error){
             System.out.println(error.getLocalizedMessage());
@@ -370,8 +375,13 @@ public class login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new login().setVisible(true);
                
+            }
+
+            private void setIconImage(Image image) {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             }
         });
     }

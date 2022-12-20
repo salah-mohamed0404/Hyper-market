@@ -16,6 +16,7 @@ import Database.*;
 import static Database.UDB.isUserIdUnique;
 import static Database.UDB.isUserNameUnique;
 import User.User;
+import java.awt.Image;
 /**
  *
  * @author shehab
@@ -27,7 +28,8 @@ public class Admin extends javax.swing.JFrame {
      */
     public Admin(User u) {
         initComponents();
-        
+        Image img = new ImageIcon(this.getClass().getResource("/market/imgs/lock v2.png")).getImage();
+                this.setIconImage(img);
         //Add employee to table
             try{
             ArrayList<User> users = UDB.search("*");
@@ -320,6 +322,7 @@ public class Admin extends javax.swing.JFrame {
         welcomeLabel.setBackground(new java.awt.Color(0, 0, 0));
         welcomeLabel.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         welcomeLabel.setForeground(new java.awt.Color(255, 115, 29));
+        welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         welcomeLabel.setText(" ");
 
         jLabel6.setPreferredSize(new java.awt.Dimension(250, 250));
@@ -335,16 +338,15 @@ public class Admin extends javax.swing.JFrame {
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(HomeLayout.createSequentialGroup()
                         .addGap(313, 313, 313)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
-                .addGap(0, 497, Short.MAX_VALUE)
-                .addComponent(welcomeLabel)
-                .addGap(335, 335, 335))
+                        .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(HomeLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(336, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,9 +360,9 @@ public class Admin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(55, 55, 55)
+                .addGap(39, 39, 39)
                 .addComponent(welcomeLabel)
-                .addContainerGap(491, Short.MAX_VALUE))
+                .addContainerGap(507, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);

@@ -11,6 +11,7 @@ import User.User;
 import java.sql.Date;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.sql.SQLException;
 import javax.swing.*;
 import java.util.*;
@@ -30,6 +31,8 @@ User user;
   
     public Sales(User u) {
         initComponents();
+        Image img = new ImageIcon(this.getClass().getResource("/market/imgs/lock v2.png")).getImage();
+                this.setIconImage(img);
          updateTable();
         
         user = u; 
@@ -157,6 +160,7 @@ User user;
         jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SALES");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -358,6 +362,7 @@ User user;
         welcomeSalses.setBackground(new java.awt.Color(0, 0, 0));
         welcomeSalses.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         welcomeSalses.setForeground(new java.awt.Color(255, 115, 29));
+        welcomeSalses.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         welcomeSalses.setText("Welcome, adminName");
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
@@ -374,7 +379,7 @@ User user;
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))))
                 .addContainerGap(420, Short.MAX_VALUE))
         );

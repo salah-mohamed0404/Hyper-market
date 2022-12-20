@@ -14,6 +14,7 @@ import Product.*;
 import javax.swing.table.TableModel;
 import java.sql.Date;
 import User.User;
+import java.awt.Image;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ public class MarketingFrame extends javax.swing.JFrame {
     User user ;
     public MarketingFrame(User u) {
         initComponents();
+        Image img = new ImageIcon(this.getClass().getResource("/market/imgs/lock v2.png")).getImage();
+                this.setIconImage(img);
         user = u;
         marketingWelcome.setText("Welcome, "+user.getName());
         currentName.setText(user.getName());
@@ -411,8 +414,8 @@ public class MarketingFrame extends javax.swing.JFrame {
                 .addContainerGap(332, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(marketingWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(273, 273, 273))
+                .addComponent(marketingWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(314, 314, 314))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -427,8 +430,8 @@ public class MarketingFrame extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62)
-                .addComponent(marketingWelcome)
-                .addContainerGap(513, Short.MAX_VALUE))
+                .addComponent(marketingWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(490, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Home", Home);
