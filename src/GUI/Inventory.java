@@ -108,7 +108,7 @@ public class Inventory extends javax.swing.JFrame {
     public Inventory(User u) {
         initComponents();
          updateTable();
-       
+       jLabel3.setText("welcome, "+u.getName());
     }
 
     /**
@@ -392,6 +392,7 @@ public class Inventory extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 115, 29));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Welcome, adminName");
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
@@ -399,9 +400,9 @@ public class Inventory extends javax.swing.JFrame {
         HomeLayout.setHorizontalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomeLayout.createSequentialGroup()
-                .addGap(236, 236, 236)
                 .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomeLayout.createSequentialGroup()
+                        .addGap(236, 236, 236)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,10 +410,9 @@ public class Inventory extends javax.swing.JFrame {
                             .addGroup(HomeLayout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)
-                        .addGap(20, 20, 20)))
+                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addGap(273, 273, 273)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(297, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
@@ -1488,6 +1488,7 @@ public class Inventory extends javax.swing.JFrame {
 
             }
         }
+        
     }//GEN-LAST:event_updateProductBtnActionPerformed
 
     private void searchBarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyReleased

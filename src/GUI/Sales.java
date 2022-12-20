@@ -28,7 +28,7 @@ public class Sales extends javax.swing.JFrame {
     public Sales(User u) {
         initComponents();
          updateTable();
-        
+        welcomeText.setText("Welcome," +u.getName());
        
     }
     
@@ -86,7 +86,7 @@ public class Sales extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        welcomeText = new javax.swing.JLabel();
         Manage_admin = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         currentPassword = new javax.swing.JLabel();
@@ -336,22 +336,20 @@ public class Sales extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/market/imgs/adminLogo.png"))); // NOI18N
 
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 115, 29));
-        jLabel3.setText("Welcome, adminName");
+        welcomeText.setBackground(new java.awt.Color(0, 0, 0));
+        welcomeText.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        welcomeText.setForeground(new java.awt.Color(255, 115, 29));
+        welcomeText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        welcomeText.setText("Welcome, adminName");
 
         javax.swing.GroupLayout HomeLayout = new javax.swing.GroupLayout(Home);
         Home.setLayout(HomeLayout);
         HomeLayout.setHorizontalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HomeLayout.createSequentialGroup()
-                .addGap(416, 416, 416)
                 .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(HomeLayout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jLabel3))
-                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addGap(416, 416, 416)
                         .addComponent(jLabel2)
                         .addGroup(HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(HomeLayout.createSequentialGroup()
@@ -360,7 +358,10 @@ public class Sales extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(92, 92, 92)))))
+                                .addGap(92, 92, 92))))
+                    .addGroup(HomeLayout.createSequentialGroup()
+                        .addGap(491, 491, 491)
+                        .addComponent(welcomeText, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(434, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
@@ -374,7 +375,7 @@ public class Sales extends javax.swing.JFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(welcomeText)
                 .addContainerGap(341, Short.MAX_VALUE))
         );
 
@@ -1592,7 +1593,6 @@ public class Sales extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1625,5 +1625,6 @@ public class Sales extends javax.swing.JFrame {
     private javax.swing.ButtonGroup searchType;
     private javax.swing.JTextField totalInput;
     private javax.swing.JTextField userNameField;
+    private javax.swing.JLabel welcomeText;
     // End of variables declaration//GEN-END:variables
 }
