@@ -5,6 +5,7 @@
 package GUI;
 import Database.*;
 import Product.*;
+import User.User;
 import java.sql.Date;
 import java.awt.Color;
 import javax.swing.*;
@@ -104,7 +105,7 @@ public class Inventory extends javax.swing.JFrame {
              tb1Model.removeRow(0);
           }
     }
-    public Inventory() {
+    public Inventory(User u) {
         initComponents();
          updateTable();
        
@@ -779,9 +780,6 @@ public class Inventory extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(addProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -800,7 +798,10 @@ public class Inventory extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(typeAddBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(dateAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(dateAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(129, 129, 129)
+                        .addComponent(addProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -1408,9 +1409,13 @@ public class Inventory extends javax.swing.JFrame {
         Double.parseDouble(priceAddField.getText()),
     Date.valueOf(dateAddField.getText()),
         typeAddBox.getSelectedItem().toString());
-            
+            String finalOffer="no offer";
+                if(product.getOfferPrice()!=-1.0){
+//                    finalOffer="no offer";
+                        finalOffer=String.valueOf(product.getOfferPrice());
+                }
                 
-            String data[] = {String.valueOf(product.getId()),nameAddField.getText().toLowerCase(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText()};
+            String data[] = {String.valueOf(product.getId()),nameAddField.getText().toLowerCase(),priceAddField.getText(),typeAddBox.getSelectedItem().toString(),dateAddField.getText(),finalOffer};
             DefaultTableModel tb1Model = (DefaultTableModel) productsTable.getModel();
             tb1Model.addRow(data);
             JOptionPane.showMessageDialog(this, "successfully added");
@@ -1587,7 +1592,7 @@ public class Inventory extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Inventory().setVisible(true);
+//                new Inventory().setVisible(true);
             }
         });
     }

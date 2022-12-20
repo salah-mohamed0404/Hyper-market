@@ -4,7 +4,10 @@
  */
 package GUI;
 
+import Database.UDB;
+import User.*;
 import java.awt.Color;
+import java.util.Arrays;
 
 /**
  *
@@ -17,9 +20,11 @@ public class login extends javax.swing.JFrame {
      */
     public login() {
         initComponents();
+        
+            
        
     }
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +41,6 @@ public class login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        myRole = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
@@ -102,16 +106,6 @@ public class login extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-
-        myRole.setBackground(new java.awt.Color(255, 248, 242));
-        myRole.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        myRole.setForeground(new java.awt.Color(5, 58, 102));
-        myRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Sales", "Marketting", "Inventory" }));
-        myRole.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                myRoleActionPerformed(evt);
-            }
-        });
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
@@ -190,13 +184,8 @@ public class login extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(myRole, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(120, 120, 120))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(loginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(111, 111, 111))))
+                        .addComponent(loginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(111, 111, 111))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -235,14 +224,12 @@ public class login extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(myRole, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
+                        .addGap(147, 147, 147)
                         .addComponent(jLabel4))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(85, 85, 85)
                         .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -278,10 +265,6 @@ public class login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void myRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myRoleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_myRoleActionPerformed
-
     private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
             // TODO add your handling code here:
        username.requestFocusInWindow();
@@ -314,7 +297,38 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_passwordFocusLost
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        // TODO add your handling code here:
+        try{
+         User u = UDB.login(username.getText().toLowerCase().trim(), String.valueOf(password.getPassword()));
+           if(u !=null){    
+                  if("admin".equals(u.getType())){
+                      
+                      Admin admin = new Admin(u);
+                      admin.setVisible(true);
+                      this.dispose();
+                  }else if("inventory".equals(u.getType())){
+                  
+                      Inventory inv = new Inventory(u);
+                      inv.setVisible(true);
+                      this.dispose();
+                  }else if("sales".equals(u.getType())){
+                  
+                      Sales sales = new Sales(u);
+                      sales.setVisible(true);
+                      this.dispose();
+                  }else if("marketing".equals(u.getType())){
+                  
+                      MarketingFrame marketing = new MarketingFrame(u);
+                      marketing.setVisible(true);
+                      this.dispose();
+                  }
+                 
+                   
+           }else{
+                 System.out.println("no");
+           }
+        } catch(Exception  error){
+            System.out.println(error.getLocalizedMessage());
+          } 
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void loginBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnMouseClicked
@@ -371,7 +385,6 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JButton loginBtn;
-    private javax.swing.JComboBox<String> myRole;
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables

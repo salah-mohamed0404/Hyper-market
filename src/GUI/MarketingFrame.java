@@ -13,6 +13,7 @@ import Database.*;
 import Product.*;
 import javax.swing.table.TableModel;
 import java.sql.Date;
+import User.User;
 /**
  *
  * @author shehab
@@ -22,7 +23,7 @@ public class MarketingFrame extends javax.swing.JFrame {
     /**
      * Creates new form MarketingFrame
      */
-    public MarketingFrame() {
+    public MarketingFrame(User u) {
         initComponents();
         
         //Add current products to Make reports Table
@@ -1607,7 +1608,7 @@ public class MarketingFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MarketingFrame().setVisible(true);
+//                new MarketingFrame().setVisible(true);
             }
         });
     }

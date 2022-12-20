@@ -25,7 +25,7 @@ import javax.swing.table.TableRowSorter;
 public class Sales extends javax.swing.JFrame {
   double totalPrice = 0.0;
   
-    public Sales() {
+    public Sales(User u) {
         initComponents();
          updateTable();
         
@@ -1556,7 +1556,7 @@ public class Sales extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Sales().setVisible(true);
+//                new Sales().setVisible(true);
             }
         });
     }
