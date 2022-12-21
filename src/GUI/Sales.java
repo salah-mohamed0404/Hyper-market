@@ -614,7 +614,7 @@ User user;
 
         makeOrder.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(5, 58, 102));
+        jPanel1.setBackground(new java.awt.Color(255, 115, 29));
 
         jLabel11.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -1340,12 +1340,12 @@ User user;
           // TODO add your handling code here:
          defaultTable(manageOrderTable);
           ArrayList<Order> orders = ODB.search("*");
-           
+          
           for(int i = 0 ; i < orders.size();i++){
                 DefaultTableModel tb1Model = (DefaultTableModel) manageOrderTable.getModel();
-                ArrayList<User> user = UDB.search("id = " + orders.get(i).getId());
-                
-                String data[] ={String.valueOf(orders.get(i).getId()),String.valueOf(user.get(0).getName()),String.valueOf(orders.get(i).getCreateAt()),"Active"};
+                ArrayList<User> m = UDB.search("id = " + orders.get(i).getUserId());
+                 System.out.println(i);
+                String data[] ={String.valueOf(orders.get(i).getId()),m.get(0).getName(),String.valueOf(orders.get(i).getCreateAt()),"Active"};
                 tb1Model.addRow(data);
             
           }
@@ -1430,10 +1430,18 @@ User user;
             JOptionPane.showMessageDialog(this, "successfully added");
             totalPrice += Double.parseDouble( proPrice.getText());
              totalInput.setText(String.valueOf(totalPrice));
+             DefaultTableModel tb2Model = (DefaultTableModel) productsTable.getModel(); 
+            for(int i = 0 ; i < tb2Model.getRowCount();i++){
+             if(proId.getText().trim().equals(tb1Model.getValueAt(i, 0))){
+                 tb2Model.removeRow(i);
+                 break;
+             }
+             
+            }
             proId.setText("");
             proName.setText("");
             proPrice.setText("");
-         
+            
                     
                     
         }
@@ -1485,9 +1493,10 @@ User user;
 
     private void deleteProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProductActionPerformed
         DefaultTableModel tb1Model = (DefaultTableModel) orderTable.getModel();
+         DefaultTableModel tb2Model = (DefaultTableModel) productsTable.getModel();
        
         //delete row
-        if(productsTable.getSelectedRowCount()==1){
+        if(orderTable.getSelectedRowCount()==1){
             try{
                String tbId =  tb1Model.getValueAt(orderTable.getSelectedRow(),0).toString();
                
@@ -1499,7 +1508,22 @@ User user;
             double tbPrice = Double.parseDouble(tb1Model.getValueAt(orderTable.getSelectedRow(),2).toString());
              totalPrice-=tbPrice;
              totalInput.setText(String.valueOf(totalPrice));
+             try{
+                 
+                 Product produ = PDB.search("id = "+orderTable.getValueAt(orderTable.getSelectedRow(), 0).toString()).get(0);
+                String finalOffer="no offer";
+                if(produ.getOfferPrice()!=-1.0){
+//                    finalOffer="no offer";
+                        finalOffer=String.valueOf(produ.getOfferPrice());
+                }
+
+                  String[] rowData = {String.valueOf(produ.getId()),String.valueOf(produ.getName()),String.valueOf(produ.getPrice()),finalOffer};
+                  tb2Model.addRow(rowData);
+             }catch(Exception  error){}
+            
             tb1Model.removeRow(orderTable.getSelectedRow());
+            
+            
            
             
         }else{
