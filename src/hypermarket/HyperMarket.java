@@ -14,8 +14,7 @@ public class HyperMarket {
      */
     public static void main(String[] args) {
         login f1 = new login();
-        Admin a = new Admin();
-        a.setVisible(true);
+        f1.setVisible(true);
 //        f1.setVisible(true);
           
     }
